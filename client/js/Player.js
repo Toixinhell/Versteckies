@@ -50,9 +50,9 @@ var Player = function(startX, startY, hexColor) {
 
 	// Draw player
 	var draw = function(ctx) {
-		ctx.fillRect(x,y, 50, 50);
+		ctx.fillRect(x-25, y-25, 50, 50);
 		ctx.fillStyle=color;
-		ctx.drawImage(img,x,y);
+		ctx.drawImage(img,x-25,y-25);
 	};
 
 	// Define which variables and methods can be accessed
