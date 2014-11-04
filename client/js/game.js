@@ -41,7 +41,7 @@ function init() {
 	localPlayer = new Player(startX, startY, getRandomColor());
 
 	// Initialise socket connection
-	socket = io.connect("http://localhost:8000");
+	socket = io.connect("http://192.168.2.200:8000");
 
 	// Initialise remote players array
 	remotePlayers = [];
@@ -79,6 +79,9 @@ var setEventHandlers = function() {
 	
 	// Player collided
 	socket.on("collision", onClientCollision);
+	
+	// Player collided
+	socket.on("server message", onServerMessage);
 };
 
 // Keyboard key down
@@ -158,7 +161,12 @@ function onRemovePlayer(data) {
 
 function onClientCollision(data){
 	console.log(data);
-	html = writeCollisionHTML(data);
+	writeCollisionHTML(data);
+}
+
+function onServerMessage(data){
+	console.log(data);
+	writeServerMessage(data);
 }
 
 /**************************************************
