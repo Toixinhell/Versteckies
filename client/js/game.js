@@ -34,10 +34,10 @@ function init() {
 		startY = Math.round(Math.random()*(canvas.height-5));
 
 	// Initialise the local player
-	localPlayer = new Player(startX, startY);
+	localPlayer = new Player(startX, startY, getRandomColor());
 
 	// Initialise socket connection
-	socket = io.connect("http://192.168.2.200:8000");
+	socket = io.connect("http://localhost:8000");
 
 	// Initialise remote players array
 	remotePlayers = [];
@@ -147,7 +147,7 @@ function onRemovePlayer(data) {
 		console.log("Player not found: "+data.id);
 		return;
 	};
-
+	
 	// Remove player from array
 	remotePlayers.splice(remotePlayers.indexOf(removePlayer), 1);
 };
