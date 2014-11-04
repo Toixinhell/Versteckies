@@ -159,6 +159,7 @@ var j;
 	for (i = 0; i < players.length; i++) {
 		for (j = 0; j < players.length ; j++) {
 			
+			/*
 			console.log('-----------------------------' ); 
 			console.log('Player: ' + players[i].id ); 
 			//console.log('X: ' + players[i].getX() + ' Y: ' + players[i].getY());
@@ -166,7 +167,7 @@ var j;
 			//console.log('X: ' + players[j].getX() + ' Y: ' + players[j].getY());
 			console.log(players[i].getIsActive());
 			console.log(players[j].getIsActive());
-			
+			*/
 			if (checkCoordinates(players[i].getX(), players[i].getY(), players[j].getX(), players[j].getY()) 
 				&& players[i].id != players[j].id
 				&& players[i].getIsActive() 
