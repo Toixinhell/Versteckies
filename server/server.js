@@ -59,16 +59,18 @@ function onSocketConnection(client) {
 	client.on("move player", onMovePlayer);
 	
 	// Listen for client collision
-	client.on("collision", onClientCollision);
+	//client.on("collision", onClientCollision);
 	
 };
-
+/*
 // Socket client has disconnected
 function onClientCollision() {
 	
 	console.log('collision');
 	
 };
+*/
+
 
 // Socket client has disconnected
 function onClientDisconnect() {
@@ -194,11 +196,6 @@ var j;
 	};
 
 };
-/**************************************************
-** RUN THE GAME
-**************************************************/
-init();
-
 
 
 function checkCoordinates(p1x, p1y, p2x, p2y) {
@@ -217,3 +214,11 @@ function checkCoordinates(p1x, p1y, p2x, p2y) {
 	
 	return returnVal;
 }
+
+/**************************************************
+** RUN THE GAME
+**************************************************/
+init();
+
+
+
