@@ -126,6 +126,8 @@ function onMovePlayer(data) {
 	
 	// Broadcast updated position to connected socket clients
 	this.broadcast.emit("move player", {id: movePlayer.id, x: movePlayer.getX(), y: movePlayer.getY()});
+	
+	console.log('collison emit');
 	this.broadcast.emit("collision", {p1: 222231, p2: 12435265236});
 };
 
