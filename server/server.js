@@ -169,6 +169,7 @@ var j;
 				
 				// Collision! hold your hats!
 				socket.emit("collision", {id1: players[j].id, id2: players[i].id});
+				break;
 			}
 		};
 	};
