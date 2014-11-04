@@ -5,7 +5,7 @@ var Player = function(startX, startY) {
 	var x = startX,
 		y = startY,
 		id, 
-		isActive;;
+		isActive = true;
 
 	// Getters and setters
 	var getX = function() {

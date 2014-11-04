@@ -108,26 +108,33 @@ function onNewPlayer(data) {
 
 // Player has moved
 function onMovePlayer(data) {
+	
 	// Find player in array
 	var movePlayer = playerById(this.id);
 
-	// Player not found
-	if (!movePlayer) {
-		util.log("Player not found: "+this.id);
-		return;
-	};
+	if(movePlayer.getIsActive())
+	{
+		// Player not found
+		if (!movePlayer) {
+			util.log("Player not found: "+this.id);
+			return;
+		};
 
-	// Update player position
-	movePlayer.setX(data.x);
-	movePlayer.setY(data.y);
+		// Update player position
+		movePlayer.setX(data.x);
+		movePlayer.setY(data.y);
 
-	
-	//Check for collision
-	collisionDetect();
-	
-	// Broadcast updated position to connected socket clients
-	this.broadcast.emit("move player", {id: movePlayer.id, x: movePlayer.getX(), y: movePlayer.getY()});
-	
+		
+		//Check for collision
+		collisionDetect();
+		
+		// Broadcast updated position to connected socket clients
+		this.broadcast.emit("move player", {id: movePlayer.id, x: movePlayer.getX(), y: movePlayer.getY()});
+	}
+	else
+	{
+		this.emit("server message", {status: 1, msg: 'You are dead mate!'});
+	}
 };
 
 
@@ -152,17 +159,18 @@ var j;
 	for (i = 0; i < players.length; i++) {
 		for (j = 0; j < players.length ; j++) {
 			
-			/*console.log('-----------------------------' ); 
+			console.log('-----------------------------' ); 
 			console.log('Player: ' + players[i].id ); 
-			console.log('X: ' + players[i].getX() + ' Y: ' + players[i].getY());
+			//console.log('X: ' + players[i].getX() + ' Y: ' + players[i].getY());
 			console.log('Player: ' + players[j].id);
-			console.log('X: ' + players[j].getX() + ' Y: ' + players[j].getY());
-			*/
+			//console.log('X: ' + players[j].getX() + ' Y: ' + players[j].getY());
+			console.log(players[i].getIsActive());
+			console.log(players[j].getIsActive());
 			
 			if (checkCoordinates(players[i].getX(), players[i].getY(), players[j].getX(), players[j].getY()) 
 				&& players[i].id != players[j].id
-				&& players[i].isActive 
-				&& players[j].isActive)
+				&& players[i].getIsActive() 
+				&& players[j].getIsActive())
 			{
 				console.log('treffer!!');
 				console.log('-----------------------------' ); 
@@ -172,8 +180,8 @@ var j;
 				console.log('X: ' + players[j].getX() + ' Y: ' + players[j].getY());
 				
 				// Collision! hold your hats!
-				players[i].isActive = false;
-				players[j].isActive = false;
+				players[i].setIsActive(false);
+				players[j].setIsActive(false);
 				
 				socket.emit("collision", {id1: players[j].id, id2: players[i].id});
 				break;
