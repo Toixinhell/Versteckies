@@ -151,15 +151,23 @@ var i;
 var j;
 	for (i = 0; i < players.length; i++) {
 		for (j = 0; j < players.length ; j++) {
-			console.log('-----------------------------' ); 
+			
+			/*console.log('-----------------------------' ); 
 			console.log('Player: ' + players[i].id ); 
 			console.log('X: ' + players[i].getX() + ' Y: ' + players[i].getY());
 			console.log('Player: ' + players[j].id);
 			console.log('X: ' + players[j].getX() + ' Y: ' + players[j].getY());
-			
+			*/
 			if (players[i].getX() == players[j].getX() && players[i].getY() == players[j].getY() && players[i].id != players[j].id)
 			{
 				console.log('treffer!!');
+				console.log('-----------------------------' ); 
+				console.log('Player: ' + players[i].id ); 
+				console.log('X: ' + players[i].getX() + ' Y: ' + players[i].getY());
+				console.log('Player: ' + players[j].id);
+				console.log('X: ' + players[j].getX() + ' Y: ' + players[j].getY());
+				
+				// Collision! hold your hats!
 				socket.emit("collision", {id1: players[j].id, id2: players[i].id});
 			}
 		};
