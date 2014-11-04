@@ -158,6 +158,13 @@ function onRemovePlayer(data) {
 
 function onClientCollision(data){
 	console.log(data);
+	
+	//playersisActive
+	playerById(data.id1).setIsActive(false);
+	playerById(data.id2).setIsActive(false);
+	console.log('Player: ' + playerById(data.id2).getIsActive()); 
+	
+	
 	html = writeCollisionHTML(data);
 }
 

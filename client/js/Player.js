@@ -6,6 +6,7 @@ var Player = function(startX, startY, hexColor) {
 		y = startY,
 		color = hexColor,
 		id,
+		isActive = true,
 		moveAmount = 2;
 	
 	// Getters and setters
@@ -23,6 +24,14 @@ var Player = function(startX, startY, hexColor) {
 
 	var setY = function(newY) {
 		y = newY;
+	};
+	
+	var getIsActive = function() {
+		return isActive;
+	};
+	
+	var setIsActive = function(newIsActive) {
+		isActive = newIsActive;
 	};
 
 	// Update player position
@@ -61,6 +70,8 @@ var Player = function(startX, startY, hexColor) {
 		getY: getY,
 		setX: setX,
 		setY: setY,
+		getIsActive : getIsActive,
+		setIsActive : setIsActive,
 		update: update,
 		draw: draw
 	}
