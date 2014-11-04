@@ -12,7 +12,11 @@ var util = require("util"),					// Utility resources (logging, object inspection
 var socket,		// Socket controller
 	players;	// Array of connected players
 
-
+/**************************************************
+** VARIABLES STRAIGHT FROM HELL
+**************************************************/
+var DEBUG = false; 	//Are you shure?	
+	
 /**************************************************
 ** GAME INITIALISATION
 **************************************************/
@@ -124,7 +128,6 @@ function onMovePlayer(data) {
 		movePlayer.setX(data.x);
 		movePlayer.setY(data.y);
 
-		
 		//Check for collision
 		collisionDetect();
 		
@@ -162,18 +165,24 @@ var j;
 			if (checkCoordinates(players[i].getX(), players[i].getY(), players[j].getX(), players[j].getY()) 
 				&& players[i].id != players[j].id
 				&& players[i].getIsActive() 
-				&& players[j].getIsActive())
-			{
-				console.log('treffer!!');
-				console.log('-----------------------------' ); 
-				console.log('Player: ' + players[i].id ); 
-				console.log('X: ' + players[i].getX() + ' Y: ' + players[i].getY());
-				console.log('Player: ' + players[i].getIsActive()); 
+				&& players[j].getIsActive()){
 				
-				console.log('Player: ' + players[j].id);
-				console.log('X: ' + players[j].getX() + ' Y: ' + players[j].getY());
-				console.log('Player: ' + players[j].getIsActive()); 
-				console.log('-----------------------------' );
+				console.log('treffer!!');
+				
+				if(DEBUG){
+
+					console.log('------------Colision Detection-----------------' ); 
+					console.log('Player: ' + players[i].id ); 
+					console.log('X: ' + players[i].getX() + ' Y: ' + players[i].getY());
+					console.log('Player: ' + players[i].getIsActive()); 
+					
+					console.log('Player: ' + players[j].id);
+					console.log('X: ' + players[j].getX() + ' Y: ' + players[j].getY());
+					console.log('Player: ' + players[j].getIsActive()); 
+					console.log('-----------------------------------------------' );
+					
+				}
+				
 				// Collision! hold your hats!
 				players[i].setIsActive(false);
 				players[j].setIsActive(false);
@@ -198,16 +207,13 @@ function checkCoordinates(p1x, p1y, p2x, p2y) {
 	var tol = 20; // toleranz for collision detection
 
 
-if (p1x < p2x + tol &&
-   p1x + tol > p2x &&
-   p1y < p2y + tol &&
-   tol + p1y > p2y) {
-    // collision detected!
-		returnVal = true;
-}
+	if (p1x < p2x + tol &&
+	   p1x + tol > p2x &&
+	   p1y < p2y + tol &&
+	   tol + p1y > p2y) {
+		// collision detected!
+			returnVal = true;
+	}
 	
-	
-	
-		return returnVal;
-	
+	return returnVal;
 }

@@ -8,6 +8,8 @@ var canvas,			// Canvas DOM element
 	remotePlayers,	// Remote players
 	socket,
 	img;			// Socket connection
+	
+var DEBUG = true; 	//Are you shure?
 
 
 /**************************************************
@@ -157,13 +159,33 @@ function onRemovePlayer(data) {
 };
 
 function onClientCollision(data){
-	console.log(data);
+	var colPlayer1 = playerById(data.id1);
+	var colPlayer2 = playerById(data.id2);
 	
-	//playersisActive
-	var test = playerById(data.id1);
 	
-	console.log(test); 
-	//test.setIsActive(false);
+	// Player not found
+	if (!colPlayer1) {
+		if(localPlayer.getIsActive()){
+			localPlayer.setIsActive(false);
+			colPlayer2.setIsActive(false);
+		}
+	}
+	
+	else if (!colPlayer2) {
+		if(localPlayer.getIsActive()){
+			localPlayer.setIsActive(false);
+			colPlayer1.setIsActive(false);
+		}
+	}
+	
+	else
+	{
+		colPlayer1.setIsActive(false);
+		colPlayer2.setIsActive(false);
+	}
+	
+		
+	//debugPlayers(data);
 	
 	//console.log('Player got collision: ' + test.getIsActive()); 
 	
@@ -188,7 +210,8 @@ function animate() {
 **************************************************/
 function update() {
 	// Update local player and check for change
-	if (localPlayer.update(keys)) {
+	//console.log(localPlayer.getIsActive());
+	if (localPlayer.update(keys) && localPlayer.getIsActive()) {
 		// Send local player data to the game server
 		socket.emit("move player", {x: localPlayer.getX(), y: localPlayer.getY()});
 	};
@@ -226,3 +249,12 @@ function playerById(id) {
 	
 	return false;
 };
+
+function debugPlayers(data){
+	for (i = 0; i < remotePlayers.length; i++) {
+		
+			console.log(remotePlayers[i]);
+		
+		};
+	console.log(localPlayer);
+}
