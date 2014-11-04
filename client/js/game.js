@@ -6,7 +6,8 @@ var canvas,			// Canvas DOM element
 	keys,			// Keyboard input
 	localPlayer,	// Local player
 	remotePlayers,	// Remote players
-	socket;			// Socket connection
+	socket,
+	img;			// Socket connection
 
 
 /**************************************************
@@ -17,6 +18,9 @@ function init() {
 	canvas = document.getElementById("gameCanvas");
 	ctx = canvas.getContext("2d");
 	
+	img = new Image();
+  	img.src = 'images/shaq.png';
+  	
 	// Maximise the canvas
 	canvas.width = 800//window.innerWidth;
 	canvas.height = 600//window.innerHeight;
@@ -154,7 +158,7 @@ function onRemovePlayer(data) {
 
 function onClientCollision(data){
 	console.log(data);
-	jQuery('#log').append('stuff</br>');
+	html = writeCollisionHTML(data);
 }
 
 /**************************************************
