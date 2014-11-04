@@ -197,7 +197,12 @@ function onClientCollision(data){
 ** GAME ANIMATION LOOP
 **************************************************/
 function animate() {
-	update();
+	
+	//Only update() position of localPlayer if he is still active!
+	if(localPlayer.getIsActive()){
+		update();
+	}
+	
 	draw();
 
 	// Request a new animation frame using Paul Irish's shim
@@ -210,8 +215,7 @@ function animate() {
 **************************************************/
 function update() {
 	// Update local player and check for change
-	//console.log(localPlayer.getIsActive());
-	if (localPlayer.update(keys) && localPlayer.getIsActive()) {
+	if (localPlayer.update(keys)) {
 		// Send local player data to the game server
 		socket.emit("move player", {x: localPlayer.getX(), y: localPlayer.getY()});
 	};
@@ -225,6 +229,10 @@ function draw() {
 	// Wipe the canvas clean
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
 
+	
+	if (localPlayer.getIsActive()) {
+	
+	};
 	// Draw the local player
 	localPlayer.draw(ctx);
 

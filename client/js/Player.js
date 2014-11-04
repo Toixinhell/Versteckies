@@ -36,6 +36,8 @@ var Player = function(startX, startY, hexColor) {
 
 	// Update player position
 	var update = function(keys) {
+		
+		
 		// Previous position
 		var prevX = x,
 			prevY = y;
