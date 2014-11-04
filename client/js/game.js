@@ -37,7 +37,7 @@ function init() {
 	localPlayer = new Player(startX, startY);
 
 	// Initialise socket connection
-	socket = io.connect("http://localhost:8000");
+	socket = io.connect("http://192.168.2.200:8000");
 
 	// Initialise remote players array
 	remotePlayers = [];
@@ -72,6 +72,9 @@ var setEventHandlers = function() {
 
 	// Player removed message received
 	socket.on("remove player", onRemovePlayer);
+	
+	// Player collided
+	socket.on("collision", onClientCollision);
 };
 
 // Keyboard key down
@@ -149,6 +152,9 @@ function onRemovePlayer(data) {
 	remotePlayers.splice(remotePlayers.indexOf(removePlayer), 1);
 };
 
+function onClientCollision(){
+	console.log("collision");
+}
 
 /**************************************************
 ** GAME ANIMATION LOOP
