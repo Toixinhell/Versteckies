@@ -116,7 +116,7 @@ function onNewPlayer(data) {
 	console.log("New player connected: "+data.id);
 
 	// Initialise the new player
-	var newPlayer = new Player(data.x, data.y);
+	var newPlayer = new Player(data.x, data.y, getRandomColor());
 	newPlayer.id = data.id;
 
 	// Add new player to the remote players array
@@ -152,8 +152,8 @@ function onRemovePlayer(data) {
 	remotePlayers.splice(remotePlayers.indexOf(removePlayer), 1);
 };
 
-function onClientCollision(){
-	console.log("collision");
+function onClientCollision(data){
+	console.log(data);
 }
 
 /**************************************************

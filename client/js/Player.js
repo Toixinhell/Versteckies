@@ -1,9 +1,10 @@
 /**************************************************
 ** GAME PLAYER CLASS
 **************************************************/
-var Player = function(startX, startY) {
+var Player = function(startX, startY, hexColor) {
 	var x = startX,
 		y = startY,
+		color = hexColor,
 		id,
 		moveAmount = 2;
 	
@@ -50,6 +51,7 @@ var Player = function(startX, startY) {
 	// Draw player
 	var draw = function(ctx) {
 		ctx.fillRect(x-5, y-5, 10, 10);
+		ctx.fillStyle=color;
 	};
 
 	// Define which variables and methods can be accessed
