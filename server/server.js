@@ -60,9 +60,9 @@ function onSocketConnection(client) {
 };
 
 // Socket client has disconnected
-function onClientCollision(data) {
+function onClientCollision() {
+	
 	console.log('collision');
-	// Broadcast 
 	
 };
 
@@ -122,13 +122,12 @@ function onMovePlayer(data) {
 	movePlayer.setY(data.y);
 
 	
-	
+	//Check for collision
+	collision();
 	
 	// Broadcast updated position to connected socket clients
 	this.broadcast.emit("move player", {id: movePlayer.id, x: movePlayer.getX(), y: movePlayer.getY()});
 	
-	console.log('collison emit');
-	this.broadcast.emit("collision", {p1: 222231, p2: 12435265236});
 };
 
 
@@ -146,7 +145,14 @@ function playerById(id) {
 	return false;
 };
 
+function collision() {
 
+//dfelete players
+//update arry
+
+
+	socket.emit("collision", {id1: players[0].id, id2: players[1].id});
+};
 /**************************************************
 ** RUN THE GAME
 **************************************************/
