@@ -158,7 +158,11 @@ var j;
 			console.log('Player: ' + players[j].id);
 			console.log('X: ' + players[j].getX() + ' Y: ' + players[j].getY());
 			*/
-			if (players[i].getX() == players[j].getX() && players[i].getY() == players[j].getY() && players[i].id != players[j].id)
+			
+			if (checkCoordinates(players[i].getX(), players[i].getY(), players[j].getX(), players[j].getY()) 
+				&& players[i].id != players[j].id
+				&& players[i].isActive 
+				&& players[j].isActive)
 			{
 				console.log('treffer!!');
 				console.log('-----------------------------' ); 
@@ -168,6 +172,9 @@ var j;
 				console.log('X: ' + players[j].getX() + ' Y: ' + players[j].getY());
 				
 				// Collision! hold your hats!
+				players[i].isActive = false;
+				players[j].isActive = false;
+				
 				socket.emit("collision", {id1: players[j].id, id2: players[i].id});
 				break;
 			}
@@ -179,3 +186,25 @@ var j;
 ** RUN THE GAME
 **************************************************/
 init();
+
+
+
+function checkCoordinates(p1x, p1y, p2x, p2y) {
+	
+	var returnVal = false;
+	var tol = 20; // toleranz for collision detection
+
+
+if (p1x < p2x + tol &&
+   p1x + tol > p2x &&
+   p1y < p2y + tol &&
+   tol + p1y > p2y) {
+    // collision detected!
+		returnVal = true;
+}
+	
+	
+	
+		return returnVal;
+	
+}
