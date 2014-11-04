@@ -160,9 +160,10 @@ function onClientCollision(data){
 	console.log(data);
 	
 	//playersisActive
-	playerById(data.id1).setIsActive(false);
-	playerById(data.id2).setIsActive(false);
-	console.log('Player: ' + playerById(data.id2).getIsActive()); 
+	var test = playerById(data.id1);
+	test.setIsActive(false);
+	
+	console.log('Player got collision: ' + test.getIsActive()); 
 	
 	
 	html = writeCollisionHTML(data);
