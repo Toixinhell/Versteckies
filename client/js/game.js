@@ -37,7 +37,7 @@ function init() {
 	localPlayer = new Player(startX, startY);
 
 	// Initialise socket connection
-	socket = io.connect("http://localhost:8000");
+	socket = io.connect("http://192.168.2.200:8000");
 
 	// Initialise remote players array
 	remotePlayers = [];

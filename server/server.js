@@ -53,6 +53,17 @@ function onSocketConnection(client) {
 
 	// Listen for move player message
 	client.on("move player", onMovePlayer);
+	
+	// Listen for client collision
+	client.on("collision", onClientCollision);
+	
+};
+
+// Socket client has disconnected
+function onClientCollision(data) {
+	console.log('collision');
+	// Broadcast 
+	
 };
 
 // Socket client has disconnected
@@ -115,6 +126,7 @@ function onMovePlayer(data) {
 	
 	// Broadcast updated position to connected socket clients
 	this.broadcast.emit("move player", {id: movePlayer.id, x: movePlayer.getX(), y: movePlayer.getY()});
+	this.broadcast.emit("collision", {p1: 222231, p2: 12435265236});
 };
 
 
