@@ -154,6 +154,7 @@ function onRemovePlayer(data) {
 
 function onClientCollision(data){
 	console.log(data);
+	jQuery('#log').append('stuff</br>');
 }
 
 /**************************************************
