@@ -288,9 +288,6 @@ function draw() {
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
 
 	
-	if (localPlayer.getIsActive()) {
-	
-	};
 	// Draw the local player
 	localPlayer.draw(ctx);
 
