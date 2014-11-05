@@ -141,8 +141,7 @@ function onMovePlayer(data) {
 	// Find player in array
 	var movePlayer = playerById(this.id);
 
-	if(movePlayer.getIsActive())
-	{
+	
 		// Player not found
 		if (!movePlayer) {
 			util.log("Player not found: "+this.id);
@@ -158,11 +157,12 @@ function onMovePlayer(data) {
 		
 		// Broadcast updated position to connected socket clients
 		this.broadcast.emit("move player", {id: movePlayer.id, x: movePlayer.getX(), y: movePlayer.getY()});
-	}
+	/*
 	else
 	{
 		this.emit("server message", {status: 1, msg: 'You are dead mate!'});
 	}
+	*/
 };
 
 
