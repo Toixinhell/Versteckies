@@ -15,7 +15,7 @@ var socket,		// Socket controller
 /**************************************************
 ** VARIABLES STRAIGHT FROM HELL
 **************************************************/
-var DEBUG = false; 	//Are you shure?	
+var DEBUG = true; 	//Are you shure?	
 	
 /**************************************************
 ** GAME INITIALISATION
@@ -182,11 +182,37 @@ function playerById(id) {
 
 //Detecting a collision of any players
 function collisionDetect() {
-
+	console.log('Known Players on Server:');
+	var h;
+	for (h = 0;h < players.length; h++) {
+			console.log(players[h].id);
+	};
+	
 var i;
 var j;
 	for (i = 0; i < players.length; i++) {
+		if(DEBUG){
+		
+		console.log('------------Colision Detection Player 1------------' ); 
+					console.log(' id: ' + players[i].id ); 
+					console.log('X: ' + players[i].getX() + ' Y: ' + players[i].getY());
+					console.log('Player active: ' + players[i].getIsActive());
+					console.log('Player catcher: ' + players[i].getIsCatcher());					
+					
+		}
 		for (j = 0; j < players.length ; j++) {
+			
+			if(DEBUG){
+
+					console.log('-------------------Player 2----------------------------' );
+					console.log('Player 2 id: ' + players[j].id);
+					console.log('X: ' + players[j].getX() + ' Y: ' + players[j].getY());
+					console.log('Player ACTIVE: ' + players[j].getIsActive()); 
+					console.log('Player catcher: ' + players[j].getIsCatcher());
+					console.log('-----------------------------------------------' );
+					
+				}
+			
 			
 			if (checkCoordinates(players[i].getX(), players[i].getY(), players[j].getX(), players[j].getY()) 
 				&& players[i].id != players[j].id
@@ -197,25 +223,13 @@ var j;
 				
 				console.log('treffer!!');
 				
-				if(DEBUG){
-
-					console.log('------------Colision Detection-----------------' ); 
-					console.log('Player: ' + players[i].id ); 
-					console.log('X: ' + players[i].getX() + ' Y: ' + players[i].getY());
-					console.log('Player: ' + players[i].getIsActive()); 
-					
-					console.log('Player: ' + players[j].id);
-					console.log('X: ' + players[j].getX() + ' Y: ' + players[j].getY());
-					console.log('Player: ' + players[j].getIsActive()); 
-					console.log('-----------------------------------------------' );
-					
-				}
+				
 				
 				// Collision! hold your hats!
 				players[i].setIsActive(false);
 				players[j].setIsActive(false);
 				
-				socket.emit("collision", {id1: players[j].id, id2: players[i].id});
+				socket.emit("collision", {id1: players[i].id, id2: players[j].id});
 				break;
 			}
 		};

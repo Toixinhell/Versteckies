@@ -172,24 +172,27 @@ function onClientCollision(data){
 	var colPlayer1 = playerById(data.id1);
 	var colPlayer2 = playerById(data.id2);
 	
+	
+	if (DEBUG){
+		
+		console.log('Server sent a collision');
+		console.log('colider1 id: ' + colPlayer1.id);
+		console.log('colider2 id: ' + colPlayer2.id);
+	
+	}
 	//Update Remote Players
 	// Player 1 may be localPlayer not found
 	if (!colPlayer1) {
-		
+		console.log('colPlayer1 is null, has to be localPlayer');
 		if(localPlayer.getIsActive()){
+			console.log('localPlayer is active');
 			
 			if (localPlayer.getIsCatcher())
 			{	
-				console.log('localPlayer is Catcher, so only colplay2 set inactive');
-				//localPlayer.setIsActive(false);
-				//console.log(remotePlayers.indexOf(colPlayer2));//.setIsActive(false);
-				//colPlayer2.setIsActive(false);
+				console.log('localPlayer is Catcher');
 				updateRemotePlayerActive(colPlayer2.id, false);
 				socket.emit("update player active", {id: colPlayer2.id, isActive: colPlayer2.getIsActive()});
-				
-				console.log('loacl is catcher:: ' + localPlayer.getIsCatcher());
-				console.log('2: ' + colPlayer2.getIsActive());
-				
+	
 			}
 			
 			else
@@ -205,23 +208,23 @@ function onClientCollision(data){
 	}
 	// Player 2 may be localPlayer not found
 	else if (!colPlayer2) {
+		console.log('colPlayer2 is null, has to be localPlayer');
+		
 		if(localPlayer.getIsActive()){
+			console.log('localPlayer is active');
+			
 			if (localPlayer.getIsCatcher())
 			{
-				console.log('localPlayer is Catcher, so only colplay1 set inactive');
+				console.log('localPlayer is catcher');
 				updateRemotePlayerActive(colPlayer1.id, false);
 				socket.emit("update player active", {id: colPlayer1.id, isActive: colPlayer1.getIsActive()});
 				
-				
-				console.log('loacl 2 is catcher:: ' + localPlayer.getIsCatcher());
-				console.log('1: ' + colPlayer1.getIsActive());
 			}
 			else
 			{
+				console.log('localPlayer is not catcher');
 				localPlayer.setIsActive(false);
 				socket.emit("update player active", {id: localPlayer.id, isActive: localPlayer.getIsActive()});
-				console.log('localPlayer is not, so only colplay1 set inactive');
-				console.log('localPlayer is the catcher, so no active update needed.');
 			
 			}
 		}
@@ -230,7 +233,7 @@ function onClientCollision(data){
 	
 	else
 	{
-		console.log('localPlayer is NOT catcher so set both inactive');
+		console.log('localPlayer is NOT involved, so set both inactive');
 		if (colPlayer1.getIsCatcher())
 		{
 			updateRemotePlayerActive(colPlayer2.id, false);
@@ -255,8 +258,9 @@ function onClientCollision(data){
 **************************************************/
 function animate() {
 	
-	//console.log('localplayer is :' + localPlayer.getIsCatcher());
+	console.log('localplayer is :' + localPlayer.getIsCatcher());
 	//Only update() position of localPlayer if he is still active!
+	
 	if(localPlayer.getIsActive()){
 		update();
 	}
