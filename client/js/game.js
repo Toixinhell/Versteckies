@@ -20,8 +20,11 @@ function init() {
 	canvas = document.getElementById("gameCanvas");
 	ctx = canvas.getContext("2d");
 	
-	img = new Image();
-  	img.src = 'images/shaq.png';
+	imgPlayer = new Image();
+  	imgPlayer.src = 'images/shaq.png';
+	
+	imgCatcher = new Image();
+  	imgCatcher.src = 'images/ghost.gif';
   	
 	// Maximise the canvas
 	canvas.width = 800//window.innerWidth;
@@ -312,14 +315,30 @@ function draw() {
 	// Wipe the canvas clean
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-	
-	// Draw the local player
-	localPlayer.draw(ctx);
-
+	if (localPlayer.getIsCatcher())
+	{
+		// Draw the local player
+		localPlayer.drawCatcher(ctx);
+	}
+	else
+	{
+		// Draw the local player
+		localPlayer.draw(ctx);
+	}
 	// Draw the remote players
 	var i;
 	for (i = 0; i < remotePlayers.length; i++) {
-		remotePlayers[i].draw(ctx);
+		if (remotePlayers[i].getIsCatcher())
+		{
+			// Draw the local player
+			remotePlayers[i].drawCatcher(ctx);
+		}
+		else
+		{
+			// Draw the local player
+			remotePlayers[i].draw(ctx);
+		}
+	
 	};
 };
 

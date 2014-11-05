@@ -70,9 +70,24 @@ var Player = function(startX, startY, hexColor, newIsCatcher) {
 
 	// Draw player
 	var draw = function(ctx) {
-		ctx.fillRect(x-25, y-25, 50, 50);
-		ctx.fillStyle=color;
-		ctx.drawImage(img,x-25,y-25);
+
+			ctx.fillRect(x-25, y-25, 30, 30);
+			ctx.fillStyle = color;
+			ctx.drawImage(imgPlayer,x-25,y-25);
+	
+			ctx.fill();
+	
+	};
+	
+	// Draw catcher
+	var drawCatcher = function(ctx) {
+	
+		ctx.fillRect(x-25, y-25, 10, 10);
+		ctx.fillStyle = 'red';
+		ctx.drawImage(imgCatcher,x-25,y-25);
+
+		ctx.fill();
+	
 	};
 
 	// Define which variables and methods can be accessed
@@ -86,6 +101,7 @@ var Player = function(startX, startY, hexColor, newIsCatcher) {
 		setIsCatcher : setIsCatcher,
 		getIsCatcher : getIsCatcher,
 		update: update,
-		draw: draw
+		draw: draw,
+		drawCatcher: drawCatcher
 	}
 };
