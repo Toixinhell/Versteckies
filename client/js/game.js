@@ -84,6 +84,10 @@ var setEventHandlers = function() {
 	
 	// Player catcher
 	socket.on("catcher", onClientCatcher);
+	
+	
+		// Player catcher
+	socket.on("game over", onGameOver);
 };
 
 // Keyboard key down
@@ -105,6 +109,13 @@ function onResize(e) {
 	// Maximise the canvas
 	canvas.width = window.innerWidth;
 	canvas.height = window.innerHeight;
+};
+
+//Game over
+function onGameOver(gameData) {
+	
+	console.log('Game over:' + gameData.msg);
+	
 };
 
 // Socket connected

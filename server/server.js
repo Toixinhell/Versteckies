@@ -155,14 +155,14 @@ function onMovePlayer(data) {
 		//Check for collision
 		collisionDetect();
 		
+		//Check if game is over (moves are the only thing changing)
+		if(countActive() == 1){
+			this.broadcast.emit("game over", {msg: 'test'});
+			//init();
+		}
 		// Broadcast updated position to connected socket clients
 		this.broadcast.emit("move player", {id: movePlayer.id, x: movePlayer.getX(), y: movePlayer.getY()});
-	/*
-	else
-	{
-		this.emit("server message", {status: 1, msg: 'You are dead mate!'});
-	}
-	*/
+	
 };
 
 
@@ -182,11 +182,15 @@ function playerById(id) {
 
 //Detecting a collision of any players
 function collisionDetect() {
-	console.log('Known Players on Server:');
-	var h;
-	for (h = 0;h < players.length; h++) {
-			console.log(players[h].id);
-	};
+	if(DEBUG){
+		console.log('Known Players on Server:');
+		var h;
+		for (h = 0;h < players.length; h++) {
+				console.log(players[h].id);
+		};
+	}
+
+console.log(players.length);
 	
 var i;
 var j;
@@ -260,6 +264,22 @@ function checkCoordinates(p1x, p1y, p2x, p2y) {
 	}
 	
 	return returnVal;
+}
+
+function countActive() {
+	
+	var countActive = 0;
+	
+	var h;
+	for (h = 0;h < players.length; h++) {
+			
+			if(players[h].getIsActive())
+			{
+				countActive++;
+			}
+	};
+	
+	return countActive;
 }
 
 function catcherDefined() {
