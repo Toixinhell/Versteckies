@@ -7,7 +7,7 @@ var canvas,			// Canvas DOM element
 	localPlayer,	// Local player
 	remotePlayers,	// Remote players
 	socket,
-	img;			// Socket connection
+	img;			// The player image
 	
 var DEBUG = true; 	//Are you shure?
 
