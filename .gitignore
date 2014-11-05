@@ -41,3 +41,6 @@ Icon
 Network Trash Folder
 Temporary Items
 .apdisk
+
+# Directories potentially fore node modules
+node_modules
