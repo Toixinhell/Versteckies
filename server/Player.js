@@ -5,7 +5,8 @@ var Player = function(startX, startY) {
 	var x = startX,
 		y = startY,
 		id, 
-		isActive = true;
+		isActive = true,
+		isCatcher = false;
 
 	// Getters and setters
 	var getX = function() {
@@ -31,6 +32,15 @@ var Player = function(startX, startY) {
 	var setIsActive = function(newIsActive) {
 		isActive = newIsActive;
 	};
+	
+	var getIsCatcher = function() {
+		return isCatcher;
+	};
+	
+	var setIsCatcher = function(newIsCatcher) {
+		isCatcher = newIsCatcher;
+	};
+	
 	// Define which variables and methods can be accessed
 	return {
 		getX: getX,
@@ -39,6 +49,8 @@ var Player = function(startX, startY) {
 		setY: setY,
 		getIsActive : getIsActive,
 		setIsActive : setIsActive,
+		setIsCatcher : setIsCatcher,
+		getIsCatcher : getIsCatcher,
 		id: id
 	}
 };

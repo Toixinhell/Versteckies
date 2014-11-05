@@ -23,11 +23,11 @@ var DEBUG = false; 	//Are you shure?
 function init() {
 	// Create an empty array to store players
 	players = [];
+	
+	// Start the game socket listening to port 8000
 	socket = io.listen(8000);
-	
-	//socket.set("transports", ["websocket"]);
-	
-	console.log('new Game Start');
+
+	console.log('New Game Started');
 	
 	// Start listening for events
 	setEventHandlers();
@@ -38,10 +38,11 @@ function init() {
 ** GAME EVENT HANDLERS
 **************************************************/
 var setEventHandlers = function() {
+
 	// Socket.IO
 	console.log('new Connection established');
 	socket.sockets.on("connection", onSocketConnection );
-	//console.log(socket);
+
 };
 
 // New socket connection
@@ -93,18 +94,29 @@ function onClientDisconnect() {
 
 // New player has joined
 function onNewPlayer(data) {
+
 	// Create a new player
 	var newPlayer = new Player(data.x, data.y);
 	newPlayer.id = this.id;
-
+	
+	if (!catcherDefined())
+	{
+		//here we set the first player to be the catcher
+		newPlayer.setIsCatcher(true);
+		
+		console.log('First player set to Catcher ' + newPlayer.getIsCatcher());
+	}
+	
+	
 	// Broadcast new player to connected socket clients
-	this.broadcast.emit("new player", {id: newPlayer.id, x: newPlayer.getX(), y: newPlayer.getY()});
+	this.broadcast.emit("new player", {id: newPlayer.id, x: newPlayer.getX(), y: newPlayer.getY(), isCatcher: newPlayer.getIsCatcher()});
 
 	// Send existing players to the new player
 	var i, existingPlayer;
 	for (i = 0; i < players.length; i++) {
 		existingPlayer = players[i];
-		this.emit("new player", {id: existingPlayer.id, x: existingPlayer.getX(), y: existingPlayer.getY()});
+		this.emit("new player", {id: existingPlayer.id, x: existingPlayer.getX(), y: existingPlayer.getY(), isCatcher: newPlayer.getIsCatcher()});
+		console.log(existingPlayer.getIsCatcher() + ' id: ' + existingPlayer.id); 
 	};
 
 	
@@ -118,7 +130,7 @@ function onMovePlayer(data) {
 	// Find player in array
 	var movePlayer = playerById(this.id);
 
-	if(movePlayer.getIsActive())
+	if(movePlayer.getIsActive() || movePlayer.getIsCatcher())
 	{
 		// Player not found
 		if (!movePlayer) {
@@ -157,6 +169,7 @@ function playerById(id) {
 	return false;
 };
 
+//Detecting a collision of any players
 function collisionDetect() {
 
 var i;
@@ -167,7 +180,9 @@ var j;
 			if (checkCoordinates(players[i].getX(), players[i].getY(), players[j].getX(), players[j].getY()) 
 				&& players[i].id != players[j].id
 				&& players[i].getIsActive() 
-				&& players[j].getIsActive()){
+				&& players[j].getIsActive()
+				&&  (players[i].getIsCatcher() ||
+					 players[j].getIsCatcher())){
 				
 				console.log('treffer!!');
 				
@@ -198,10 +213,11 @@ var j;
 };
 
 
+//Checking the coordinates of two players with a tolerance
 function checkCoordinates(p1x, p1y, p2x, p2y) {
 	
 	var returnVal = false;
-	var tol = 20; // toleranz for collision detection
+	var tol = 20; // tolerance for collision detection
 
 
 	if (p1x < p2x + tol &&
@@ -214,6 +230,18 @@ function checkCoordinates(p1x, p1y, p2x, p2y) {
 	
 	return returnVal;
 }
+
+function catcherDefined() {
+	
+	var i;
+	
+	for (i = 0; i < players.length; i++) {
+		if (players[i].getIsCatcher())
+			return true;
+	};
+	return false;
+}
+
 
 /**************************************************
 ** RUN THE GAME

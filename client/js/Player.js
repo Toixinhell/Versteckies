@@ -1,13 +1,14 @@
 /**************************************************
 ** GAME PLAYER CLASS
 **************************************************/
-var Player = function(startX, startY, hexColor) {
+var Player = function(startX, startY, hexColor, newIsCatcher) {
 	var x = startX,
 		y = startY,
 		color = hexColor,
 		id,
 		isActive = true,
-		moveAmount = 2;
+		moveAmount = 2,
+		isCatcher = newIsCatcher;
 	
 	// Getters and setters
 	var getX = function() {
@@ -34,6 +35,14 @@ var Player = function(startX, startY, hexColor) {
 		isActive = newIsActive;
 	};
 
+	var getIsCatcher = function() {
+		return isCatcher;
+	};
+	
+	var setIsCatcher = function(newIsCatcher) {
+		isCatcher = newIsCatcher;
+	};
+	
 	// Update player position
 	var update = function(keys) {
 		
@@ -74,6 +83,8 @@ var Player = function(startX, startY, hexColor) {
 		setY: setY,
 		getIsActive : getIsActive,
 		setIsActive : setIsActive,
+		setIsCatcher : setIsCatcher,
+		getIsCatcher : getIsCatcher,
 		update: update,
 		draw: draw
 	}
