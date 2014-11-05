@@ -15,7 +15,7 @@ var socket,		// Socket controller
 /**************************************************
 ** VARIABLES STRAIGHT FROM HELL
 **************************************************/
-var DEBUG = true; 	//Are you shure?	
+var DEBUG = false; 	//Are you shure?	
 	
 /**************************************************
 ** GAME INITIALISATION
@@ -79,7 +79,7 @@ function onClientCatcher(player) {
 function onPlayerActiveUpdate(data) {
 	
 	console.log('player sent update');
-	console.log(data);
+	//console.log(data);
 	updatePlayer(data.id, data.isActive);
 	
 };
@@ -158,6 +158,12 @@ function onMovePlayer(data) {
 		//Check if game is over (moves are the only thing changing)
 		if(countActive() == 1){
 			this.broadcast.emit("game over", {msg: 'you lost!'});
+			
+			//Now also set the last player inactive
+			console.log('last player set inactive');
+			movePlayer.setIsCatcher(false);
+			movePlayer.setIsActive(false);
+			
 			this.emit("game over", {msg: 'you won'});
 			//init();
 		}
@@ -191,7 +197,6 @@ function collisionDetect() {
 		};
 	}
 
-console.log(players.length);
 	
 var i;
 var j;
@@ -304,6 +309,7 @@ function updatePlayer(id, active) {
 	};
 	return false;
 };
+
 
 /**************************************************
 ** RUN THE GAME

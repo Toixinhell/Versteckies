@@ -114,6 +114,12 @@ function onResize(e) {
 //Game over
 function onGameOver(gameData) {
 	
+	if(gameData.msg == 'you won')
+	{
+		localPlayer.setIsActive(false);
+		localPlayer.setIsCatcher(false);
+	}
+	
 	console.log('Game over:' + gameData.msg);
 	
 };
@@ -270,7 +276,10 @@ function onClientCollision(data){
 **************************************************/
 function animate() {
 	
-	console.log('localplayer is catcher:' + localPlayer.getIsCatcher());
+	//console.log('localplayer is catcher:' + localPlayer.getIsCatcher());
+	//console.log('localplayer is catcher:' + localPlayer.getIsActive());
+	
+	
 	//Only update() position of localPlayer if he is still active!
 	
 	if(localPlayer.getIsActive()){
