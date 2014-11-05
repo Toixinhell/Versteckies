@@ -191,12 +191,13 @@ function onClientCollision(data){
 			{	
 				console.log('localPlayer is Catcher');
 				updateRemotePlayerActive(colPlayer2.id, false);
-				socket.emit("update player active", {id: colPlayer2.id, isActive: colPlayer2.getIsActive()});
+				//socket.emit("update player active", {id: colPlayer2.id, isActive: colPlayer2.getIsActive()});
 	
 			}
 			
 			else
 			{	
+			console.log('localPlayer is not catcher');
 				localPlayer.setIsActive(false);
 				socket.emit("update player active", {id: localPlayer.id, isActive: localPlayer.getIsActive()});
 				
@@ -217,7 +218,7 @@ function onClientCollision(data){
 			{
 				console.log('localPlayer is catcher');
 				updateRemotePlayerActive(colPlayer1.id, false);
-				socket.emit("update player active", {id: colPlayer1.id, isActive: colPlayer1.getIsActive()});
+				//socket.emit("update player active", {id: colPlayer1.id, isActive: colPlayer1.getIsActive()});
 				
 			}
 			else
@@ -237,12 +238,12 @@ function onClientCollision(data){
 		if (colPlayer1.getIsCatcher())
 		{
 			updateRemotePlayerActive(colPlayer2.id, false);
-			socket.emit("update player active", {id: colPlayer2.id, isActive: colPlayer2.getIsActive()});
+			//socket.emit("update player active", {id: colPlayer2.id, isActive: colPlayer2.getIsActive()});
 		}
 		else if (colPlayer2.getIsCatcher())
 		{
 			updateRemotePlayerActive(colPlayer1.id, false);
-			socket.emit("update player active", {id: colPlayer1.id, isActive: colPlayer1.getIsActive()});
+			//socket.emit("update player active", {id: colPlayer1.id, isActive: colPlayer1.getIsActive()});
 		}
 		
 		console.log('1: ' + colPlayer1.getIsActive());
@@ -258,7 +259,7 @@ function onClientCollision(data){
 **************************************************/
 function animate() {
 	
-	console.log('localplayer is :' + localPlayer.getIsCatcher());
+	console.log('localplayer is catcher:' + localPlayer.getIsCatcher());
 	//Only update() position of localPlayer if he is still active!
 	
 	if(localPlayer.getIsActive()){

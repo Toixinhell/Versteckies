@@ -226,8 +226,14 @@ var j;
 				
 				
 				// Collision! hold your hats!
-				players[i].setIsActive(false);
-				players[j].setIsActive(false);
+				if (!players[i].getIsCatcher())
+				{
+					players[i].setIsActive(false);
+				}
+				if (!players[j].getIsCatcher())
+				{
+					players[j].setIsActive(false);
+				}
 				
 				socket.emit("collision", {id1: players[i].id, id2: players[j].id});
 				break;
