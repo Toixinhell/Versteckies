@@ -59,19 +59,30 @@ function onSocketConnection(client) {
 	// Listen for move player message
 	client.on("move player", onMovePlayer);
 	
-	// Listen for client collision
-	//client.on("collision", onClientCollision);
+	// Listen for client catcher
+	client.on("catcher", onClientCatcher);
+	
+	// Listen for client update
+	client.on("update player active", onPlayerActiveUpdate);
+	
 	
 };
-/*
+
 // Socket client has disconnected
-function onClientCollision() {
+function onClientCatcher(player) {
 	
 	console.log('collision');
 	
 };
-*/
 
+// Get Player Updates
+function onPlayerActiveUpdate(data) {
+	
+	console.log('player sent update');
+	console.log(data);
+	updatePlayer(data.id, data.isActive);
+	
+};
 
 // Socket client has disconnected
 function onClientDisconnect() {
@@ -103,7 +114,7 @@ function onNewPlayer(data) {
 	{
 		//here we set the first player to be the catcher
 		newPlayer.setIsCatcher(true);
-		
+		this.emit("catcher", {catcher: true});
 		console.log('First player set to Catcher ' + newPlayer.getIsCatcher());
 	}
 	
@@ -115,8 +126,8 @@ function onNewPlayer(data) {
 	var i, existingPlayer;
 	for (i = 0; i < players.length; i++) {
 		existingPlayer = players[i];
-		this.emit("new player", {id: existingPlayer.id, x: existingPlayer.getX(), y: existingPlayer.getY(), isCatcher: newPlayer.getIsCatcher()});
-		console.log(existingPlayer.getIsCatcher() + ' id: ' + existingPlayer.id); 
+		this.emit("new player", {id: existingPlayer.id, x: existingPlayer.getX(), y: existingPlayer.getY(), isCatcher: existingPlayer.getIsCatcher()});
+		//console.log(existingPlayer.getIsCatcher() + ' id: ' + existingPlayer.id); 
 	};
 
 	
@@ -130,7 +141,7 @@ function onMovePlayer(data) {
 	// Find player in array
 	var movePlayer = playerById(this.id);
 
-	if(movePlayer.getIsActive() || movePlayer.getIsCatcher())
+	if(movePlayer.getIsActive())
 	{
 		// Player not found
 		if (!movePlayer) {
@@ -242,6 +253,16 @@ function catcherDefined() {
 	return false;
 }
 
+
+function updatePlayer(id, active) {
+	var i;
+	for (i = 0; i < players.length; i++) {
+		if (players[i].id == id)
+		 players[i].setIsActive(active);
+		 return true;
+	};
+	return false;
+};
 
 /**************************************************
 ** RUN THE GAME

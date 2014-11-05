@@ -39,8 +39,8 @@ function init() {
 	var startX = Math.round(Math.random()*(canvas.width-5)),
 		startY = Math.round(Math.random()*(canvas.height-5));
 
-	// Initialise the local player
-	localPlayer = new Player(startX, startY, getRandomColor());
+	// Initialise the local player (catcher is default: false)
+	localPlayer = new Player(startX, startY, getRandomColor(), false);
 
 	// Initialise socket connection
 	socket = io.connect("http://localhost:8000");
@@ -81,6 +81,9 @@ var setEventHandlers = function() {
 	
 	// Player collided
 	socket.on("collision", onClientCollision);
+	
+	// Player catcher
+	socket.on("catcher", onClientCatcher);
 };
 
 // Keyboard key down
@@ -157,39 +160,93 @@ function onRemovePlayer(data) {
 	// Remove player from array
 	remotePlayers.splice(remotePlayers.indexOf(removePlayer), 1);
 };
+function onClientCatcher(data){
+
+	localPlayer.setIsCatcher(data);
+	console.log('localPlayer set to catcher');
+}
+
+
 
 function onClientCollision(data){
 	var colPlayer1 = playerById(data.id1);
 	var colPlayer2 = playerById(data.id2);
 	
-	
-	// Player not found
+	//Update Remote Players
+	// Player 1 may be localPlayer not found
 	if (!colPlayer1) {
+		
 		if(localPlayer.getIsActive()){
-			localPlayer.setIsActive(false);
-			colPlayer2.setIsActive(false);
+			
+			if (localPlayer.getIsCatcher())
+			{	
+				console.log('localPlayer is Catcher, so only colplay2 set inactive');
+				//localPlayer.setIsActive(false);
+				//console.log(remotePlayers.indexOf(colPlayer2));//.setIsActive(false);
+				//colPlayer2.setIsActive(false);
+				updateRemotePlayerActive(colPlayer2.id, false);
+				socket.emit("update player active", {id: colPlayer2.id, isActive: colPlayer2.getIsActive()});
+				
+				console.log('loacl is catcher:: ' + localPlayer.getIsCatcher());
+				console.log('2: ' + colPlayer2.getIsActive());
+				
+			}
+			
+			else
+			{	
+				localPlayer.setIsActive(false);
+				socket.emit("update player active", {id: localPlayer.id, isActive: localPlayer.getIsActive()});
+				
+			}
+			
+			
+			
 		}
 	}
-	
+	// Player 2 may be localPlayer not found
 	else if (!colPlayer2) {
 		if(localPlayer.getIsActive()){
-			localPlayer.setIsActive(false);
-			colPlayer1.setIsActive(false);
+			if (localPlayer.getIsCatcher())
+			{
+				console.log('localPlayer is Catcher, so only colplay1 set inactive');
+				updateRemotePlayerActive(colPlayer1.id, false);
+				socket.emit("update player active", {id: colPlayer1.id, isActive: colPlayer1.getIsActive()});
+				
+				
+				console.log('loacl 2 is catcher:: ' + localPlayer.getIsCatcher());
+				console.log('1: ' + colPlayer1.getIsActive());
+			}
+			else
+			{
+				localPlayer.setIsActive(false);
+				socket.emit("update player active", {id: localPlayer.id, isActive: localPlayer.getIsActive()});
+				console.log('localPlayer is not, so only colplay1 set inactive');
+				console.log('localPlayer is the catcher, so no active update needed.');
+			
+			}
 		}
+		
 	}
 	
 	else
 	{
-		colPlayer1.setIsActive(false);
-		colPlayer2.setIsActive(false);
-	}
-	
+		console.log('localPlayer is NOT catcher so set both inactive');
+		if (colPlayer1.getIsCatcher())
+		{
+			updateRemotePlayerActive(colPlayer2.id, false);
+			socket.emit("update player active", {id: colPlayer2.id, isActive: colPlayer2.getIsActive()});
+		}
+		else if (colPlayer2.getIsCatcher())
+		{
+			updateRemotePlayerActive(colPlayer1.id, false);
+			socket.emit("update player active", {id: colPlayer1.id, isActive: colPlayer1.getIsActive()});
+		}
 		
-	debugPlayers(data);
-	
-	//console.log('Player got collision: ' + test.getIsActive()); 
-	
-	
+		console.log('1: ' + colPlayer1.getIsActive());
+		console.log('2: ' + colPlayer2.getIsActive());
+		
+	}
+
 	html = writeCollisionHTML(data);
 }
 
@@ -198,9 +255,9 @@ function onClientCollision(data){
 **************************************************/
 function animate() {
 	
-	//console.log('localplayer is :' + localPlayer);
+	//console.log('localplayer is :' + localPlayer.getIsCatcher());
 	//Only update() position of localPlayer if he is still active!
-	if(localPlayer.getIsActive() || localPlayer.getIsCatcher()){
+	if(localPlayer.getIsActive()){
 		update();
 	}
 	
@@ -258,6 +315,17 @@ function playerById(id) {
 	
 	return false;
 };
+
+function updateRemotePlayerActive(id, active) {
+	var i;
+	for (i = 0; i < remotePlayers.length; i++) {
+		if (remotePlayers[i].id == id)
+		 remotePlayers[i].setIsActive(active);
+		 return true;
+	};
+	return false;
+};
+
 
 function debugPlayers(data){
 	for (i = 0; i < remotePlayers.length; i++) {
