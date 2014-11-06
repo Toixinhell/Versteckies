@@ -116,6 +116,9 @@ function onNewPlayer(data) {
 		newPlayer.setIsCatcher(true);
 		this.emit("catcher", {catcher: true});
 		console.log('First player set to Catcher ' + newPlayer.getIsCatcher());
+		
+		//reset players
+		players = [];
 	}
 	
 	
@@ -157,11 +160,11 @@ function onMovePlayer(data) {
 		
 		//Check if game is over (moves are the only thing changing)
 		if(countActive() == 1){
-		
 			this.broadcast.emit("game over", {msg: 'you lost!'});
 			
 			//Now also set the last player inactive
 			console.log('last player set inactive');
+			
 			movePlayer.setIsCatcher(false);
 			movePlayer.setIsActive(false);
 			
