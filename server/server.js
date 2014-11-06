@@ -157,6 +157,7 @@ function onMovePlayer(data) {
 		
 		//Check if game is over (moves are the only thing changing)
 		if(countActive() == 1){
+		
 			this.broadcast.emit("game over", {msg: 'you lost!'});
 			
 			//Now also set the last player inactive
@@ -165,11 +166,13 @@ function onMovePlayer(data) {
 			movePlayer.setIsActive(false);
 			
 			this.emit("game over", {msg: 'you won'});
-			//init();
+
 		}
+		else
+		{
 		// Broadcast updated position to connected socket clients
 		this.broadcast.emit("move player", {id: movePlayer.id, x: movePlayer.getX(), y: movePlayer.getY()});
-	
+	}
 };
 
 

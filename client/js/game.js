@@ -124,7 +124,7 @@ function onGameOver(gameData) {
 	}
 	
 	console.log('Game over:' + gameData.msg);
-	
+	location.reload(); 
 };
 
 // Socket connected
