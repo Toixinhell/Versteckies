@@ -68,7 +68,7 @@ function onSocketConnection(client) {
 	
 };
 
-// Socket client has disconnected
+//
 function onClientCatcher(player) {
 	
 	console.log('collision');
@@ -77,7 +77,7 @@ function onClientCatcher(player) {
 
 // Get Player Updates
 function onPlayerActiveUpdate(data) {
-	
+
 	console.log('player sent update');
 	//console.log(data);
 	updatePlayer(data.id, data.isActive);
@@ -89,53 +89,75 @@ function onClientDisconnect() {
 	util.log("Player has disconnected: "+this.id);
 
 	var removePlayer = playerById(this.id);
+    var wasCatcher = false;
+    if(removePlayer.getIsCatcher())
+    {
+
+    }
 
 	// Player not found
 	if (!removePlayer) {
 		util.log("Player not found: "+this.id);
 		return;
-	};
+	}
+    else{
+        wasCatcher = removePlayer.getIsCatcher();
+    }
 
 	// Remove player from players array
 	players.splice(players.indexOf(removePlayer), 1);
 
 	// Broadcast removed player to connected socket clients
 	this.broadcast.emit("remove player", {id: this.id});
+
+    if(wasCatcher){
+        var randId = players[Math.floor(Math.random()*players.length)];
+
+    console.log(players);
+        console.log('-----------------');
+    console.log(randId);
+
+    }
+
 };
 
 // New player has joined
 function onNewPlayer(data) {
 
-	// Create a new player
-	var newPlayer = new Player(data.x, data.y);
-	newPlayer.id = this.id;
-	
-	if (!catcherDefined())
-	{
-		//here we set the first player to be the catcher
-		newPlayer.setIsCatcher(true);
-		this.emit("catcher", {catcher: true});
-		console.log('First player set to Catcher ' + newPlayer.getIsCatcher());
-		
-		//reset players
-		players = [];
-	}
-	
-	
-	// Broadcast new player to connected socket clients
-	this.broadcast.emit("new player", {id: newPlayer.id, x: newPlayer.getX(), y: newPlayer.getY(), isCatcher: newPlayer.getIsCatcher()});
 
-	// Send existing players to the new player
-	var i, existingPlayer;
-	for (i = 0; i < players.length; i++) {
-		existingPlayer = players[i];
-		this.emit("new player", {id: existingPlayer.id, x: existingPlayer.getX(), y: existingPlayer.getY(), isCatcher: existingPlayer.getIsCatcher()});
-		//console.log(existingPlayer.getIsCatcher() + ' id: ' + existingPlayer.id); 
-	};
+    if(players.length <= 3) {
 
-	
-	// Add new player to the players array
-	players.push(newPlayer);
+        // Create a new player
+        var newPlayer = new Player(data.x, data.y);
+        newPlayer.id = this.id;
+
+        if (!catcherDefined()) {
+            //here we set the first player to be the catcher
+            newPlayer.setIsCatcher(true);
+            this.emit("catcher", {catcher: true});
+            console.log('First player set to Catcher ' + newPlayer.getIsCatcher());
+
+            //reset players
+            //players = [];
+        }
+
+
+        // Broadcast new player to connected socket clients
+        this.broadcast.emit("new player", {id: newPlayer.id, x: newPlayer.getX(), y: newPlayer.getY(), isCatcher: newPlayer.getIsCatcher()});
+
+        // Send existing players to the new player
+        var i, existingPlayer;
+        for (i = 0; i < players.length; i++) {
+            existingPlayer = players[i];
+            this.emit("new player", {id: existingPlayer.id, x: existingPlayer.getX(), y: existingPlayer.getY(), isCatcher: existingPlayer.getIsCatcher()});
+            //console.log(existingPlayer.getIsCatcher() + ' id: ' + existingPlayer.id);
+        }
+        ;
+
+
+        // Add new player to the players array
+        players.push(newPlayer);
+    }
 };
 
 // Player has moved
@@ -155,10 +177,10 @@ function onMovePlayer(data) {
 		movePlayer.setX(data.x);
 		movePlayer.setY(data.y);
 
-        console.log(movePlayer.getIsCatcher());
-
 		//Check for collision
         collisionDetect();
+
+
 
 		//Check if game is over (moves are the only thing changing)
 		if(countActive() == 1){
@@ -253,7 +275,10 @@ var j;
 				{
 					players[j].setIsActive(false);
 				}
-				
+
+
+
+
 				socket.emit("collision", {id1: players[i].id, id2: players[j].id});
 				break;
 			}
