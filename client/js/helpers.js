@@ -11,3 +11,9 @@ function writeCollisionHTML(data){
 	html = '<p><span style="color:red;">'+data.id1+' </span>collided with<span style="color:green;"> '+data.id2+'</span></p>';
 	jQuery('#log').prepend(html);
 }
+
+function writeServerMessage(data){
+	html = '<p>ServerMessage</p>';
+	jQuery('#log').prepend(html);
+}
+

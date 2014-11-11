@@ -2,13 +2,13 @@
 ** GAME VARIABLES
 **************************************************/
 var canvas,			// Canvas DOM element
-	ctx,			// Canvas rendering context
-	keys,			// Keyboard input
-	localPlayer,	// Local player
-	remotePlayers,	// Remote players
-	socket,
-	img;			// The player image
-	
+ctx,			// Canvas rendering context
+keys,			// Keyboard input
+localPlayer,	// Local player
+remotePlayers,	// Remote players
+socket,
+img;			// The player image
+
 var DEBUG = true; 	//Are you shure?
 
 
@@ -21,10 +21,10 @@ function init() {
 	ctx = canvas.getContext("2d");
 	
 	imgPlayer = new Image();
-  	imgPlayer.src = 'images/shaq.png';
+  	imgPlayer.src = 'images/ghost.gif';
 	
 	imgCatcher = new Image();
-  	imgCatcher.src = 'images/ghost.gif';
+  	imgCatcher.src = 'images/shaq.png';
   	
 	// Maximise the canvas
 	canvas.width = 800//window.innerWidth;
@@ -35,22 +35,22 @@ function init() {
 	
 	// Initialise keyboard controls
 	keys = new Keys();
-
+	
 	// Calculate a random start position for the local player
 	// The minus 5 (half a player size) stops the player being
 	// placed right on the egde of the screen
 	var startX = Math.round(Math.random()*(canvas.width-5)),
-		startY = Math.round(Math.random()*(canvas.height-5));
-
+	startY = Math.round(Math.random()*(canvas.height-5));
+	
 	// Initialise the local player (catcher is default: false)
 	localPlayer = new Player(startX, startY, getRandomColor(), false);
-
+	
 	// Initialise socket connection
 	socket = io.connect("http://localhost:8000");
-
+	
 	// Initialise remote players array
 	remotePlayers = [];
-
+	
 	// Start listening for events
 	setEventHandlers();
 };
@@ -63,22 +63,22 @@ var setEventHandlers = function() {
 	// Keyboard
 	window.addEventListener("keydown", onKeydown, false);
 	window.addEventListener("keyup", onKeyup, false);
-
+	
 	// Window resize
 	window.addEventListener("resize", onResize, false);
-
+	
 	// Socket connection successful
 	socket.on("connect", onSocketConnected);
-
+	
 	// Socket disconnection
 	socket.on("disconnect", onSocketDisconnect);
-
+	
 	// New player message received
 	socket.on("new player", onNewPlayer);
-
+	
 	// Player move message received
 	socket.on("move player", onMovePlayer);
-
+	
 	// Player removed message received
 	socket.on("remove player", onRemovePlayer);
 	
@@ -89,7 +89,7 @@ var setEventHandlers = function() {
 	socket.on("catcher", onClientCatcher);
 	
 	
-		// Player catcher
+	// Player catcher
 	socket.on("game over", onGameOver);
 };
 
@@ -121,6 +121,9 @@ function onGameOver(gameData) {
 	{
 		localPlayer.setIsActive(false);
 		localPlayer.setIsCatcher(false);
+		alert("You're winner");
+	}else if(gameData.msg == 'you lost!'){
+		alert("THE GAME");
 	}
 	
 	console.log('Game over:' + gameData.msg);
@@ -130,7 +133,7 @@ function onGameOver(gameData) {
 // Socket connected
 function onSocketConnected() {
 	console.log("Connected to socket server");
-
+	
 	// Send local player data to the game server
 	socket.emit("new player", {x: localPlayer.getX(), y: localPlayer.getY()});
 };
@@ -143,11 +146,11 @@ function onSocketDisconnect() {
 // New player
 function onNewPlayer(data) {
 	console.log("New player connected: "+data.id);
-
+	
 	// Initialise the new player
 	var newPlayer = new Player(data.x, data.y, getRandomColor(), data.isCatcher);
 	newPlayer.id = data.id;
-
+	
 	// Add new player to the remote players array
 	remotePlayers.push(newPlayer);
 };
@@ -155,22 +158,22 @@ function onNewPlayer(data) {
 // Move player
 function onMovePlayer(data) {
 	var movePlayer = playerById(data.id);
-
+	
 	// Player not found
 	if (!movePlayer) {
 		console.log("Player not found: "+data.id);
 		return;
 	};
-
+	
 	// Update player position
-	movePlayer.setX(data.x);
-	movePlayer.setY(data.y);
+		movePlayer.setX(data.x);
+		movePlayer.setY(data.y);
 };
 
 // Remove player
 function onRemovePlayer(data) {
 	var removePlayer = playerById(data.id);
-
+	
 	// Player not found
 	if (!removePlayer) {
 		console.log("Player not found: "+data.id);
@@ -181,7 +184,7 @@ function onRemovePlayer(data) {
 	remotePlayers.splice(remotePlayers.indexOf(removePlayer), 1);
 };
 function onClientCatcher(data){
-
+	
 	localPlayer.setIsCatcher(data);
 	console.log('localPlayer set to catcher');
 }
@@ -198,7 +201,7 @@ function onClientCollision(data){
 		console.log('Server sent a collision');
 		console.log('colider1 id: ' + colPlayer1.id);
 		console.log('colider2 id: ' + colPlayer2.id);
-	
+		
 	}
 	//Update Remote Players
 	// Player 1 may be localPlayer not found
@@ -212,12 +215,12 @@ function onClientCollision(data){
 				console.log('localPlayer is Catcher');
 				updateRemotePlayerActive(colPlayer2.id, false);
 				//socket.emit("update player active", {id: colPlayer2.id, isActive: colPlayer2.getIsActive()});
-	
+				
 			}
 			
 			else
 			{	
-			console.log('localPlayer is not catcher');
+				console.log('localPlayer is not catcher');
 				localPlayer.setIsActive(false);
 				socket.emit("update player active", {id: localPlayer.id, isActive: localPlayer.getIsActive()});
 				
@@ -246,7 +249,7 @@ function onClientCollision(data){
 				console.log('localPlayer is not catcher');
 				localPlayer.setIsActive(false);
 				socket.emit("update player active", {id: localPlayer.id, isActive: localPlayer.getIsActive()});
-			
+				
 			}
 		}
 		
@@ -270,7 +273,7 @@ function onClientCollision(data){
 		console.log('2: ' + colPlayer2.getIsActive());
 		
 	}
-
+	
 	html = writeCollisionHTML(data);
 }
 
@@ -290,7 +293,7 @@ function animate() {
 	}
 	
 	draw();
-
+	
 	// Request a new animation frame using Paul Irish's shim
 	window.requestAnimFrame(animate);
 };
@@ -300,10 +303,15 @@ function animate() {
 ** GAME UPDATE
 **************************************************/
 function update() {
+	var x = localPlayer.getX();
+	var y = localPlayer.getY();
+	
+	//console.log(x,y);
+	
 	// Update local player and check for change
 	if (localPlayer.update(keys)) {
 		// Send local player data to the game server
-		socket.emit("move player", {x: localPlayer.getX(), y: localPlayer.getY()});
+		socket.emit("move player", {x: x, y: y});
 	};
 };
 
@@ -314,7 +322,7 @@ function update() {
 function draw() {
 	// Wipe the canvas clean
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
-
+	
 	if (localPlayer.getIsCatcher())
 	{
 		// Draw the local player
@@ -338,7 +346,7 @@ function draw() {
 			// Draw the local player
 			remotePlayers[i].draw(ctx);
 		}
-	
+		
 	};
 };
 
@@ -361,8 +369,8 @@ function updateRemotePlayerActive(id, active) {
 	var i;
 	for (i = 0; i < remotePlayers.length; i++) {
 		if (remotePlayers[i].id == id)
-		 remotePlayers[i].setIsActive(active);
-		 return true;
+			remotePlayers[i].setIsActive(active);
+		return true;
 	};
 	return false;
 };
@@ -371,8 +379,8 @@ function updateRemotePlayerActive(id, active) {
 function debugPlayers(data){
 	for (i = 0; i < remotePlayers.length; i++) {
 		
-			console.log(remotePlayers[i]);
+		console.log(remotePlayers[i]);
 		
-		};
+	};
 	console.log(localPlayer);
 }
