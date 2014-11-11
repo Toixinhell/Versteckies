@@ -7,7 +7,7 @@ var Player = function(startX, startY, hexColor, newIsCatcher) {
 	color = hexColor,
 	id,
 	isActive = true,
-	moveAmount = 1,
+	moveAmount = 2,
 	isCatcher = newIsCatcher,
 	direction = 'l';
 	
