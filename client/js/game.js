@@ -94,9 +94,8 @@ var setEventHandlers = function() {
 	socket.on("collision", onClientCollision);
 	
 	// Player catcher
-	socket.on("catcher", onClientCatcher);
-	
-	
+	socket.on("new Catcher", onNewCatcher);
+
 	// Player catcher
 	socket.on("game over", onGameOver);
 };
@@ -191,10 +190,29 @@ function onRemovePlayer(data) {
 	// Remove player from array
 	remotePlayers.splice(remotePlayers.indexOf(removePlayer), 1);
 };
-function onClientCatcher(data){
-	
-	localPlayer.setIsCatcher(data);
-	console.log('localPlayer set to catcher');
+// Sets the catcher
+function onNewCatcher(data){
+
+
+
+    if(!playerById(data.id)){
+        localPlayer.setIsCatcher(true);
+        localPlayer.setIsActive(true);
+        console.log('localPlayer set to catcher');
+    }
+    else{
+
+        var i;
+        for (i = 0; i < remotePlayers.length; i++) {
+            if (remotePlayers[i].id == data.id) {
+                remotePlayers[i].setIsCatcher(true);
+                console.log('remotePlayer ' + data.id + ' set to catcher');
+            }
+        };
+    }
+
+    console.log(remotePlayers);
+
 }
 
 

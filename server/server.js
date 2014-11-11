@@ -15,7 +15,7 @@ var socket,		// Socket controller
 /**************************************************
 ** VARIABLES STRAIGHT FROM HELL
 **************************************************/
-var DEBUG = false; 	//Are you shure?	
+var DEBUG = false; 	//Are you shure?
 	
 /**************************************************
 ** GAME INITIALISATION
@@ -90,10 +90,6 @@ function onClientDisconnect() {
 
 	var removePlayer = playerById(this.id);
     var wasCatcher = false;
-    if(removePlayer.getIsCatcher())
-    {
-
-    }
 
 	// Player not found
 	if (!removePlayer) {
@@ -111,12 +107,14 @@ function onClientDisconnect() {
 	this.broadcast.emit("remove player", {id: this.id});
 
     if(wasCatcher){
-        var randId = players[Math.floor(Math.random()*players.length)];
+        var rand = Math.floor(Math.random()*players.length)
+        if(rand) {
+            var randId = players[rand].id;
+            players[rand].setIsCatcher(true);
+            console.log(randId);
 
-    console.log(players);
-        console.log('-----------------');
-    console.log(randId);
-
+            this.broadcast.emit("new Catcher", {id: randId});
+        }
     }
 
 };
@@ -134,7 +132,7 @@ function onNewPlayer(data) {
         if (!catcherDefined()) {
             //here we set the first player to be the catcher
             newPlayer.setIsCatcher(true);
-            this.emit("catcher", {catcher: true});
+            this.emit("new Catcher", {id: newPlayer.id});
             console.log('First player set to Catcher ' + newPlayer.getIsCatcher());
 
             //reset players
