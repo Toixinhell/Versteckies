@@ -155,9 +155,11 @@ function onMovePlayer(data) {
 		movePlayer.setX(data.x);
 		movePlayer.setY(data.y);
 
+        console.log(movePlayer.getIsCatcher());
+
 		//Check for collision
-		collisionDetect();
-		
+        collisionDetect();
+
 		//Check if game is over (moves are the only thing changing)
 		if(countActive() == 1){
 			this.broadcast.emit("game over", {msg: 'you lost!'});
@@ -195,6 +197,7 @@ function playerById(id) {
 
 //Detecting a collision of any players
 function collisionDetect() {
+
 	if(DEBUG){
 		console.log('Known Players on Server:');
 		var h;
