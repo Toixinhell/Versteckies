@@ -94,9 +94,9 @@ var setEventHandlers = function() {
 	socket.on("collision", onClientCollision);
 	
 	// Player catcher
-	socket.on("new Catcher", onNewCatcher);
+	socket.on("new catcher", onNewCatcher);
 
-	// Player catcher
+	// game over
 	socket.on("game over", onGameOver);
 };
 

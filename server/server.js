@@ -342,6 +342,10 @@ function updatePlayer(id, active) {
 	return false;
 };
 
+function srvMsg(data) {
+    socket.emit.broadcast()
+};
+
 
 /**************************************************
 ** RUN THE GAME
