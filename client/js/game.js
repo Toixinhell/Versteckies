@@ -99,6 +99,9 @@ var setEventHandlers = function() {
 
 	// game over
 	socket.on("game over", onGameOver);
+
+	// server message
+	socket.on("server message", onServerMessage);
 };
 
 // Keyboard key down
@@ -216,7 +219,24 @@ function onNewCatcher(data){
 
 }
 
-
+function onServerMessage(data){
+//1 = info
+//2 = error
+	var type = data.status;
+	var message = data.payload;
+	var html = '';
+	
+	switch(type){
+		case 1:
+			html = '<p style="color:blue;">'+message+'</p>';
+		break;
+		case 2:
+			html = '<p style="color:red;">'+message.toUpperCase()+'</p>';
+		break;
+	}
+	
+	jQuery('#gameInfo').append(html);
+}
 
 function onClientCollision(data){
 	var colPlayer1 = playerById(data.id1);
