@@ -89,7 +89,8 @@ var setEventHandlers = function() {
 	
 	// Player removed message received
 	socket.on("remove player", onRemovePlayer);
-	
+
+
 	// Player collided
 	socket.on("collision", onClientCollision);
 	
