@@ -9,7 +9,7 @@ remotePlayers,	// Remote players
 socket,
 img;			// The player image
 
-var DEBUG = true; 	//Are you shure?
+var DEBUG = false; 	//Are you sure?
 
 
 /**************************************************
@@ -131,14 +131,14 @@ function onGameOver(gameData) {
 	if(gameData.msg == 'you won')
 	{
 		localPlayer.setIsActive(false);
-		localPlayer.setIsCatcher(false);
-		alert("You're winner");
+		//localPlayer.setIsCatcher(false);
+		drawWinnerNotice();
 	}else if(gameData.msg == 'you lost!'){
-		alert("THE GAME");
+		drawLooserNotice();
 	}
 	
 	console.log('Game over:' + gameData.msg);
-	location.reload(); 
+	//location.reload(); 
 };
 
 // Socket connected
@@ -203,8 +203,7 @@ function onNewCatcher(data){
         localPlayer.setIsCatcher(true);
         localPlayer.setIsActive(true);
         console.log('localPlayer set to catcher');
-    }
-    else{
+    }else{
 
         var i;
         for (i = 0; i < remotePlayers.length; i++) {
@@ -220,22 +219,7 @@ function onNewCatcher(data){
 }
 
 function onServerMessage(data){
-//1 = info
-//2 = error
-	var type = data.status;
-	var message = data.payload;
-	var html = '';
-	
-	switch(type){
-		case 1:
-			html = '<p style="color:blue;">'+message+'</p>';
-		break;
-		case 2:
-			html = '<p style="color:red;">'+message.toUpperCase()+'</p>';
-		break;
-	}
-	
-	jQuery('#gameInfo').append(html);
+	writeServerInfo(data);
 }
 
 function onClientCollision(data){
@@ -276,9 +260,9 @@ function onClientCollision(data){
 			
 			
 		}
-	}
+	} else if (!colPlayer2) {
+	
 	// Player 2 may be localPlayer not found
-	else if (!colPlayer2) {
 		console.log('colPlayer2 is null, has to be localPlayer');
 		
 		if(localPlayer.getIsActive()){
@@ -300,10 +284,7 @@ function onClientCollision(data){
 			}
 		}
 		
-	}
-	
-	else
-	{
+	} else {
 		console.log('localPlayer is NOT involved, so set both inactive');
 		if (colPlayer1.getIsCatcher())
 		{
