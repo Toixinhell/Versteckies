@@ -361,7 +361,7 @@ function initGame() {
         gameSocket.emit("server message", {status: data.status, payload: data.payload});
     };
 
-    initGame();
+
 
     // Define which variables and methods can be accessed
     return {
