@@ -276,7 +276,8 @@ var j;
 
 
 
-
+                srvMsg({ status : 1,
+                    payload : 'test dcollision' });
 				socket.emit("collision", {id1: players[i].id, id2: players[j].id});
 				break;
 			}
@@ -343,7 +344,13 @@ function updatePlayer(id, active) {
 };
 
 function srvMsg(data) {
-    socket.emit.broadcast()
+    /*
+    Message levels:
+    1 = info
+    2 = err
+     */
+
+    this.broadcast.emit("server message", {status: data.status, payload: data.text});
 };
 
 
