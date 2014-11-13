@@ -215,6 +215,16 @@ function playerById(id) {
 	return false;
 };
 
+
+function hitDetection(i, j) {
+    return checkCoordinates(players[i].getX(), players[i].getY(), players[j].getX(), players[j].getY())
+        && players[i].id != players[j].id
+        && players[i].getIsActive()
+        && players[j].getIsActive()
+        && (players[i].getIsCatcher() ||
+            players[j].getIsCatcher());
+}
+
 //Detecting a collision of any players
 function collisionDetect() {
 
@@ -253,12 +263,7 @@ var j;
 				}
 			
 			
-			if (checkCoordinates(players[i].getX(), players[i].getY(), players[j].getX(), players[j].getY()) 
-				&& players[i].id != players[j].id
-				&& players[i].getIsActive() 
-				&& players[j].getIsActive()
-				&&  (players[i].getIsCatcher() ||
-					 players[j].getIsCatcher())){
+			if (hitDetection(i, j)){
 				
 				console.log('treffer!!');
 				
@@ -276,8 +281,7 @@ var j;
 
 
 
-                srvMsg({ status : 1,
-                    payload : 'test dcollision' });
+                srvMsg({ status : 1, payload : 'test collision' });
 				socket.emit("collision", {id1: players[i].id, id2: players[j].id});
 				break;
 			}
