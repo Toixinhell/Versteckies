@@ -59,8 +59,7 @@ function onSocketConnection(client) {
 	// Listen for move player message
 	client.on("move player", onMovePlayer);
 	
-	// Listen for client catcher
-	client.on("catcher", onClientCatcher);
+
 	
 	// Listen for client update
 	client.on("update player active", onPlayerActiveUpdate);
@@ -68,12 +67,7 @@ function onSocketConnection(client) {
 	
 };
 
-//
-function onClientCatcher(player) {
-	
-	console.log('collision');
-	
-};
+
 
 // Get Player Updates
 function onPlayerActiveUpdate(data) {
@@ -94,7 +88,7 @@ function onClientDisconnect() {
 	// Player not found
 	if (!removePlayer) {
 		util.log("Player not found: "+this.id);
-		return;
+
 	}
     else{
         wasCatcher = removePlayer.getIsCatcher();
@@ -113,7 +107,7 @@ function onClientDisconnect() {
             players[rand].setIsCatcher(true);
             console.log(randId);
 
-            this.broadcast.emit("new Catcher", {id: randId});
+            this.broadcast.emit("new catcher", {id: randId});
         }
     }
 
@@ -132,7 +126,7 @@ function onNewPlayer(data) {
         if (!catcherDefined()) {
             //here we set the first player to be the catcher
             newPlayer.setIsCatcher(true);
-            this.emit("new Catcher", {id: newPlayer.id});
+            this.emit("new catcher", {id: newPlayer.id});
             console.log('First player set to Catcher ' + newPlayer.getIsCatcher());
 
             //reset players
@@ -353,8 +347,8 @@ function srvMsg(data) {
     1 = info
     2 = err
      */
-
-    this.broadcast.emit("server message", {status: data.status, payload: data.text});
+    console.log(data);
+    socket.emit("server message", {status: data.status, payload: data.text});
 };
 
 
