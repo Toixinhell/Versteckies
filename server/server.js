@@ -135,13 +135,23 @@ function onNewPlayer(data) {
 
 
         // Broadcast new player to connected socket clients
-        this.broadcast.emit("new player", {id: newPlayer.id, x: newPlayer.getX(), y: newPlayer.getY(), isCatcher: newPlayer.getIsCatcher()});
+        this.broadcast.emit("new player", {
+            id: newPlayer.id,
+            x: newPlayer.getX(),
+            y: newPlayer.getY(),
+            isCatcher: newPlayer.getIsCatcher()}
+        );
 
         // Send existing players to the new player
         var i, existingPlayer;
         for (i = 0; i < players.length; i++) {
             existingPlayer = players[i];
-            this.emit("new player", {id: existingPlayer.id, x: existingPlayer.getX(), y: existingPlayer.getY(), isCatcher: existingPlayer.getIsCatcher()});
+            this.emit("new player", {
+                id: existingPlayer.id,
+                x: existingPlayer.getX(),
+                y: existingPlayer.getY(),
+                isCatcher: existingPlayer.getIsCatcher()
+            });
             //console.log(existingPlayer.getIsCatcher() + ' id: ' + existingPlayer.id);
         }
         ;
@@ -236,7 +246,7 @@ var j;
 	for (i = 0; i < players.length; i++) {
 		if(DEBUG){
 		
-		console.log('------------Colision Detection Player 1------------' ); 
+		            console.log('------------Colision Detection Player 1------------' );
 					console.log(' id: ' + players[i].id ); 
 					console.log('X: ' + players[i].getX() + ' Y: ' + players[i].getY());
 					console.log('Player active: ' + players[i].getIsActive());
@@ -275,7 +285,7 @@ var j;
 
 
 
-                srvMsg({ status : 1, payload : 'test collision' });
+                srvMsg({ status : 2, payload : 'test collision' });
 				socket.emit("collision", {id1: players[i].id, id2: players[j].id});
 				break;
 			}
@@ -348,7 +358,7 @@ function srvMsg(data) {
     2 = err
      */
     console.log(data);
-    socket.emit("server message", {status: data.status, payload: data.text});
+    socket.emit("server message", {status: data.status, payload: data.payload});
 };
 
 
