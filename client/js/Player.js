@@ -2,7 +2,7 @@
  * Playerclass, this is what makes our Player ALIVE!
  *
  * @category   ClientSide
- * @author     Stefan Bakocs
+ * @author     Stefan Bakocs, Lukas Stahel
  * @license    THE BEER-WARE LICENSE (Revision 42)
  */
 var Player = function(startX, startY, hexColor, newIsCatcher) {

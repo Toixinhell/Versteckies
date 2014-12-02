@@ -3,7 +3,7 @@
  * It intercepts our keystrokes and takes the necessary action
  *
  * @category   ClientSide
- * @author     Stefan Bakocs
+ * @author     Stefan Bakocs, Lukas Stahel
  * @license    THE BEER-WARE LICENSE (Revision 42)
  */
  

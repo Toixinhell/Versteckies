@@ -1,9 +1,9 @@
 /**
- * Our Gameclass, the beating heart on the Clients side, it provides us with logic
+ * Our Game, the beating heart on the Clients side, it provides us with logic
  * and will eventually throw errors now and then
  *
  * @category   ClientSide
- * @author     Stefan Bakocs
+ * @author     Stefan Bakocs, Lukas Stahel
  * @license    THE BEER-WARE LICENSE (Revision 42)
  */
  
