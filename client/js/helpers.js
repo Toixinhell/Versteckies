@@ -69,7 +69,7 @@ function writeServerInfo(data){
 	//1 = info
 	//2 = error
 	
-	slideOutMessage();
+	
 	var type = data.status;
 	var message = data.payload;
 	var html = '';
@@ -85,6 +85,9 @@ function writeServerInfo(data){
 	
 	jQuery('#gameOver').empty().append(html);
 	slideInMessage();
+	setTimeout(function(){ 
+			slideOutMessage();
+		}, 3000);
 }
 
 /**
