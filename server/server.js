@@ -20,9 +20,6 @@ var DEBUG = false; 	//Are you shure?
 ** GAME INITIALISATION
 **************************************************/
 function init() {
-	// Create an empty array to store players
-	players = [];
-
     // Create an empty array to store games
     games = [];
 
@@ -30,8 +27,13 @@ function init() {
     socket = io.listen(8000);
 
     var game1 = new Game(socket);
+    game1.id = 1;
+    game1.initGame(socket);
 
-    //game1.initGame(socket);
+    games.push(game1);
+
+    console.log(game1);
+
 
 
 
