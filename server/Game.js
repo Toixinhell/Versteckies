@@ -155,10 +155,7 @@ var Game = function (socket) {
     function onNewPlayer(data) {
 
 
-
-
-            // Let the player know he is in a game
-            this.emit("game ready");
+        if (players.length <= 3) {
 
             // Create a new player
             var newPlayer = new Player(data.x, data.y);
@@ -196,7 +193,11 @@ var Game = function (socket) {
 
             // Add new player to the players array
             players.push(newPlayer);
+        }
 
+        else {
+                //TODO: Implement message to server that the game is full
+        }
     };
 
     /**

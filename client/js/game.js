@@ -23,7 +23,6 @@ var socket;
 var imgPlayer;
 var imgCatcher;			
 
-
 /**
  *
  * Game Initialisation
@@ -289,14 +288,7 @@ function onClientCollision(data){
 	var colPlayer1 = playerById(data.id1);
 	var colPlayer2 = playerById(data.id2);
 	
-	
-	if (DEBUG){
-		
-		console.log('Server sent a collision');
-		console.log('colider1 id: ' + colPlayer1.id);
-		console.log('colider2 id: ' + colPlayer2.id);
-		
-	}
+
 	//Update Remote Players
 	// Player 1 may be localPlayer not found
 	if (!colPlayer1) {
