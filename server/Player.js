@@ -1,6 +1,11 @@
-/**************************************************
-** GAME PLAYER CLASS
-**************************************************/
+/**
+ * This is the Player class. It resembles an active player in the game.
+ *
+ * @category   ServerSide
+ * @author     Lukas Stahel
+ * @author     Stefan Bacoks
+ * @license    THE BEER-WARE LICENSE (Revision 42)
+ */
 var Player = function(startX, startY) {
 	var x = startX,
 		y = startY,
@@ -41,7 +46,7 @@ var Player = function(startX, startY) {
 		isCatcher = newIsCatcher;
 	};
 	
-	// Define which variables and methods can be accessed
+	// Definition of accessible objects of Player
 	return {
 		getX: getX,
 		getY: getY,
