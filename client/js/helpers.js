@@ -14,7 +14,7 @@
  *
  */
 function slideInMessage(){
-	$('#gameOver').animate({left: -250});
+	jQuery('#gameOver').animate({left: -35},'fast');
 }
 
 /**
@@ -23,7 +23,7 @@ function slideInMessage(){
  *
  */
 function slideOutMessage(){
-	$('#gameOver').animate({left: -20});
+	jQuery('#gameOver').animate({left: -250}, 'fast');
 }
 
 /**
@@ -68,6 +68,8 @@ function writeServerMessage(data){
 function writeServerInfo(data){
 	//1 = info
 	//2 = error
+	
+	slideOutMessage();
 	var type = data.status;
 	var message = data.payload;
 	var html = '';
@@ -81,7 +83,8 @@ function writeServerInfo(data){
 		break;
 	}
 	
-	jQuery('#gameInfo').append(html);
+	jQuery('#gameOver').empty().append(html);
+	slideInMessage();
 }
 
 /**

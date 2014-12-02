@@ -152,8 +152,8 @@ function onKeyup(e) {
  */
 function onResize(e) {
 	// Maximise the canvas
-	canvas.width = window.innerWidth;
-	canvas.height = window.innerHeight;
+	//canvas.width = window.innerWidth;
+	// canvas.height = window.innerHeight;
 };
 
 /**
