@@ -1,51 +1,81 @@
-var util = require("util"),					// Utility resources (logging, object inspection, etc)
-    io = require("socket.io");				// Socket.IO
+/**
+ * This is the Game class, responsible for handling all of the serverside game logic.
+ *
+ * This class represents the game. It handles all logic that the server has to keep track of.
+ * Here we check if players are still connected or collided.. Also the handlers are set here,
+ * to keep them from interfering with other games. All players are sent the positions of the other players.
+ *
+ * TODO: Implement the possibility for more than one game at a time.
+ * TODO: Implement the gameID in all necessary functions, so the server can handle multiple games.
+ *
+ * @category   ServerSide
+ * @author     Lukas Stahel
+ * @author     Stefan Bacoks
+ * @license    THE BEER-WARE LICENSE (Revision 42)
+ */
+
+// Utility resources (logging, object inspection, etc)
+var util = require("util");
+var io = require("socket.io");
+
+// Class dependencies
 Player = require("./Player").Player;
 
-
-/**************************************************
- ** VARIABLES STRAIGHT FROM HELL
- **************************************************/
+// The debug variable
 var DEBUG = false; 	//Are you shure?
 
+
 /**
- * Created by Hagbart on 13.11.2014.
+ *
+ * The game class is initialized with the socket
+ *
+ * @param    socket, the socket responsible for the connections to the game
+ *
  */
-/**************************************************
- ** GAME Game CLASS
- **************************************************/
-var Game = function(socket) {
+var Game = function (socket) {
 
-    var gameSocket = socket,
-        id,
-        isFull = false,
-        started = false,
-        players = [];
+    //Game class variables
+    var gameSocket = socket;
+    var id;
+    var isFull = false;
+    var started = false;
+    var players = [];
 
 
-    //Functions
-function initGame() {
-    // Create an empty array to store players
-    setEventHandlers();
+    /**
+     *
+     * Initialize a new game, by setting all the event handlers
+     *
+     */
+    function initGame() {
+        // Create an empty array to store players
+        setEventHandlers();
 
+    }
 
-}
-
-    /**************************************************
-     ** GAME EVENT HANDLERS
-     **************************************************/
-    var setEventHandlers = function() {
+    /**
+     *
+     * Initialize the Eventhandlers when a player connects
+     *
+     */
+    var setEventHandlers = function () {
 
         // gameSocket.IO
         console.log('new Connection established');
-        gameSocket.sockets.on("connection", onSocketConnection );
+        gameSocket.sockets.on("connection", onSocketConnection);
 
     };
 
-// New gameSocket connection
+    /**
+     *
+     * Ta new game has been created
+     *
+     * @param    socket, the socket responsible for the connections to the game
+     *
+     */
     function onSocketConnection(client) {
         console.log('Setting Handlers');
-        console.log("New player has connected: "+client.id);
+        console.log("New player has connected: " + client.id);
 
         // Listen for client disconnected
         client.on("disconnect", onClientDisconnect);
@@ -63,7 +93,6 @@ function initGame() {
     };
 
 
-
 // Get Player Updates
     function onPlayerActiveUpdate(data) {
 
@@ -75,17 +104,17 @@ function initGame() {
 
 // gameSocket client has disconnected
     function onClientDisconnect() {
-        util.log("Player has disconnected: "+this.id);
+        util.log("Player has disconnected: " + this.id);
 
         var removePlayer = playerById(this.id);
         var wasCatcher = false;
 
         // Player not found
         if (!removePlayer) {
-            util.log("Player not found: "+this.id);
+            util.log("Player not found: " + this.id);
 
         }
-        else{
+        else {
             wasCatcher = removePlayer.getIsCatcher();
         }
 
@@ -95,9 +124,9 @@ function initGame() {
         // Broadcast removed player to connected gameSocket clients
         this.broadcast.emit("remove player", {id: this.id});
 
-        if(wasCatcher){
-            var rand = Math.floor(Math.random()*players.length)
-            if(rand) {
+        if (wasCatcher) {
+            var rand = Math.floor(Math.random() * players.length)
+            if (rand) {
                 var randId = players[rand].id;
                 players[rand].setIsCatcher(true);
                 console.log(randId);
@@ -112,7 +141,7 @@ function initGame() {
     function onNewPlayer(data) {
 
 
-        if(players.length <= 3) {
+        if (players.length <= 3) {
 
             // Create a new player
             var newPlayer = new Player(data.x, data.y);
@@ -148,16 +177,15 @@ function initGame() {
                     isCatcher: existingPlayer.getIsCatcher()
                 });
                 //console.log(existingPlayer.getIsCatcher() + ' id: ' + existingPlayer.id);
-            };
-
-
+            }
+            ;
 
 
             // Add new player to the players array
             players.push(newPlayer);
         }
 
-        else{
+        else {
 
         }
     };
@@ -171,9 +199,10 @@ function initGame() {
 
         // Player not found
         if (!movePlayer) {
-            util.log("Player not found: "+this.id);
+            util.log("Player not found: " + this.id);
             return;
-        };
+        }
+        ;
 
         // Update player position
         movePlayer.setX(data.x);
@@ -183,9 +212,8 @@ function initGame() {
         collisionDetect();
 
 
-
         //Check if game is over (moves are the only thing changing)
-        if(countActive() == 1){
+        if (countActive() == 1) {
             this.broadcast.emit("game over", {msg: 'you lost!'});
 
             //Now also set the last player inactive
@@ -197,8 +225,7 @@ function initGame() {
             this.emit("game over", {msg: 'you won'});
 
         }
-        else
-        {
+        else {
             // Broadcast updated position to connected gameSocket clients
             this.broadcast.emit("move player", {id: movePlayer.id, x: movePlayer.getX(), y: movePlayer.getY()});
         }
@@ -214,7 +241,8 @@ function initGame() {
         for (i = 0; i < players.length; i++) {
             if (players[i].id == id)
                 return players[i];
-        };
+        }
+        ;
 
         return false;
     };
@@ -232,65 +260,64 @@ function initGame() {
 //Detecting a collision of any players
     function collisionDetect() {
 
-        if(DEBUG){
+        if (DEBUG) {
             console.log('Known Players on Server:');
             var h;
-            for (h = 0;h < players.length; h++) {
+            for (h = 0; h < players.length; h++) {
                 console.log(players[h].id);
-            };
+            }
+            ;
         }
 
 
         var i;
         var j;
         for (i = 0; i < players.length; i++) {
-            if(DEBUG){
+            if (DEBUG) {
 
-                console.log('------------Colision Detection Player 1------------' );
-                console.log(' id: ' + players[i].id );
+                console.log('------------Colision Detection Player 1------------');
+                console.log(' id: ' + players[i].id);
                 console.log('X: ' + players[i].getX() + ' Y: ' + players[i].getY());
                 console.log('Player active: ' + players[i].getIsActive());
                 console.log('Player catcher: ' + players[i].getIsCatcher());
 
             }
-            for (j = 0; j < players.length ; j++) {
+            for (j = 0; j < players.length; j++) {
 
-                if(DEBUG){
+                if (DEBUG) {
 
-                    console.log('-------------------Player 2----------------------------' );
+                    console.log('-------------------Player 2----------------------------');
                     console.log('Player 2 id: ' + players[j].id);
                     console.log('X: ' + players[j].getX() + ' Y: ' + players[j].getY());
                     console.log('Player ACTIVE: ' + players[j].getIsActive());
                     console.log('Player catcher: ' + players[j].getIsCatcher());
-                    console.log('-----------------------------------------------' );
+                    console.log('-----------------------------------------------');
 
                 }
 
 
-                if (hitDetection(i, j)){
+                if (hitDetection(i, j)) {
 
                     console.log('treffer!!');
 
 
-
                     // Collision! hold your hats!
-                    if (!players[i].getIsCatcher())
-                    {
+                    if (!players[i].getIsCatcher()) {
                         players[i].setIsActive(false);
                     }
-                    if (!players[j].getIsCatcher())
-                    {
+                    if (!players[j].getIsCatcher()) {
                         players[j].setIsActive(false);
                     }
 
 
-
-                    srvMsg({ status : 2, payload : 'test collision' });
+                    srvMsg({ status: 2, payload: 'test collision' });
                     gameSocket.emit("collision", {id1: players[i].id, id2: players[j].id});
                     break;
                 }
-            };
-        };
+            }
+            ;
+        }
+        ;
 
     };
 
@@ -318,13 +345,13 @@ function initGame() {
         var countActive = 0;
 
         var h;
-        for (h = 0;h < players.length; h++) {
+        for (h = 0; h < players.length; h++) {
 
-            if(players[h].getIsActive())
-            {
+            if (players[h].getIsActive()) {
                 countActive++;
             }
-        };
+        }
+        ;
 
         return countActive;
     }
@@ -336,7 +363,8 @@ function initGame() {
         for (i = 0; i < players.length; i++) {
             if (players[i].getIsCatcher())
                 return true;
-        };
+        }
+        ;
         return false;
     }
 
@@ -347,7 +375,8 @@ function initGame() {
             if (players[i].id == id)
                 players[i].setIsActive(active);
             return true;
-        };
+        }
+        ;
         return false;
     };
 
@@ -362,11 +391,10 @@ function initGame() {
     };
 
 
-
     // Define which variables and methods can be accessed
     return {
-        id:id,
-        initGame:initGame
+        id: id,
+        initGame: initGame
     }
 
 

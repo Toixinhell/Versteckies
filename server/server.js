@@ -17,19 +17,16 @@ var util = require("util");
 var io = require("socket.io");
 
 // Class dependencies
-Player = require("./Player").Player;	// Player class
-Game = require("./Game").Game;            // Game class
+Player = require("./Player").Player;
+Game = require("./Game").Game;
 
 // Server variables
-var socket;	// Socket controller
-var DEBUG = false; 	//Are you shure?
+var socket;
+var DEBUG = false;
 
 /**
  *
- * Initiate the server and start waiting for players
- *
- * @param    object  $object The object to convert
- * @return      array
+ * Initiates the server and starts waiting for players.
  *
  */
 function init() {
