@@ -68,9 +68,7 @@ var Game = function (socket) {
 
     /**
      *
-     * Ta new game has been created
-     *
-     * @param    socket, the socket responsible for the connections to the game
+     * This function sets our eventhandlers
      *
      */
     function onSocketConnection(client) {
@@ -92,8 +90,11 @@ var Game = function (socket) {
 
     };
 
-
-// Get Player Updates
+    /**
+     *
+     * This function updates the players[] setting the player inactive
+     *
+     */
     function onPlayerActiveUpdate(data) {
 
         console.log('player sent update');
@@ -102,7 +103,11 @@ var Game = function (socket) {
 
     };
 
-// gameSocket client has disconnected
+    /**
+     *
+     * This handles disconnecting players and sends an update to all the remaining ones
+     *
+     */
     function onClientDisconnect() {
         util.log("Player has disconnected: " + this.id);
 
@@ -137,7 +142,16 @@ var Game = function (socket) {
 
     };
 
-// New player has joined
+    /**
+     *
+     * This function handles new player connections
+     *
+     * * @param    data, represents all information recieved from the player
+     *                data.x, the x-axis position of the player
+     *                data.y, the y-axis position of the player
+     *
+     *
+     */
     function onNewPlayer(data) {
 
 
@@ -153,8 +167,6 @@ var Game = function (socket) {
                 this.emit("new catcher", {id: newPlayer.id});
                 console.log('First player set to Catcher ' + newPlayer.getIsCatcher());
 
-                //reset players
-                //players = [];
             }
 
 
@@ -176,21 +188,27 @@ var Game = function (socket) {
                     y: existingPlayer.getY(),
                     isCatcher: existingPlayer.getIsCatcher()
                 });
-                //console.log(existingPlayer.getIsCatcher() + ' id: ' + existingPlayer.id);
             }
             ;
-
 
             // Add new player to the players array
             players.push(newPlayer);
         }
 
         else {
-
+                //TODO: Implement message to server that the game is full
         }
     };
 
-// Player has moved
+    /**
+     *
+     * This function player movement.
+     * it also checks for collisions and checks if there are still enough players connected
+     *
+     * * @param    data, represents all information recieved from the player
+     *                data.x, the x-axis position of the player
+     *                data.y, the y-axis position of the player
+     */
     function onMovePlayer(data) {
 
         // Find player in array
@@ -232,10 +250,13 @@ var Game = function (socket) {
     };
 
 
-    /**************************************************
-     ** GAME HELPER FUNCTIONS
-     **************************************************/
-// Find player by ID
+    /**
+     *
+     * This function finds players by their ID and returns an player object
+     *
+     * * @param    id, represents id of the player to be returned
+     *   @return   player object
+     */
     function playerById(id) {
         var i;
         for (i = 0; i < players.length; i++) {
@@ -247,7 +268,16 @@ var Game = function (socket) {
         return false;
     };
 
-
+    /**
+     *
+     * This function checks if two players have collided
+     *
+     * THIS FUNCTION WAS EXCLUDED FOR HOPE OF BETTER ALGORITHM
+     *
+     * * @param    i, represents index first level iteration
+     * * @param    j, represents index second level iteration
+     *
+     */
     function hitDetection(i, j) {
         return checkCoordinates(players[i].getX(), players[i].getY(), players[j].getX(), players[j].getY())
             && players[i].id != players[j].id
@@ -257,7 +287,13 @@ var Game = function (socket) {
                 players[j].getIsCatcher());
     }
 
-//Detecting a collision of any players
+    /**
+     *
+     * This function checks if  players have collided
+     * by iterating through all possibilities
+     *
+     *
+     */
     function collisionDetect() {
 
         if (DEBUG) {
@@ -269,7 +305,6 @@ var Game = function (socket) {
             ;
         }
 
-
         var i;
         var j;
         for (i = 0; i < players.length; i++) {
@@ -280,7 +315,6 @@ var Game = function (socket) {
                 console.log('X: ' + players[i].getX() + ' Y: ' + players[i].getY());
                 console.log('Player active: ' + players[i].getIsActive());
                 console.log('Player catcher: ' + players[i].getIsCatcher());
-
             }
             for (j = 0; j < players.length; j++) {
 
@@ -292,14 +326,11 @@ var Game = function (socket) {
                     console.log('Player ACTIVE: ' + players[j].getIsActive());
                     console.log('Player catcher: ' + players[j].getIsCatcher());
                     console.log('-----------------------------------------------');
-
                 }
-
 
                 if (hitDetection(i, j)) {
 
                     console.log('treffer!!');
-
 
                     // Collision! hold your hats!
                     if (!players[i].getIsCatcher()) {
@@ -309,8 +340,10 @@ var Game = function (socket) {
                         players[j].setIsActive(false);
                     }
 
-
+                    // Bring it to the players' screen
                     srvMsg({ status: 2, payload: 'test collision' });
+
+                    // Send the word out to the other players
                     gameSocket.emit("collision", {id1: players[i].id, id2: players[j].id});
                     break;
                 }
@@ -318,16 +351,28 @@ var Game = function (socket) {
             ;
         }
         ;
-
     };
 
 
-//Checking the coordinates of two players with a tolerance
+    /**
+     *
+     * This function checks if  two pints are in a range of each other
+     * by holding a tolerance
+     *
+     * * @param    p1x, represents x-axis position player 1
+     * * @param    p1y, represents y-axis position player 1
+     * * @param    p2x, represents x-axis position player 2
+     * * @param    p2y, represents y-axis position player 2
+     *
+     *   @return   returnVal, boolean if the tolerance has been breached
+     *
+     */
     function checkCoordinates(p1x, p1y, p2x, p2y) {
 
         var returnVal = false;
-        var tol = 20; // tolerance for collision detection
 
+        // tolerance for collision detection
+        var tol = 20;
 
         if (p1x < p2x + tol &&
             p1x + tol > p2x &&
@@ -339,7 +384,14 @@ var Game = function (socket) {
 
         return returnVal;
     }
-
+    /**
+     *
+     * This function counts and returns number of active players
+     * by holding a tolerance
+     *
+     *   @return   countActive, number of active players
+     *
+     */
     function countActive() {
 
         var countActive = 0;
@@ -355,7 +407,13 @@ var Game = function (socket) {
 
         return countActive;
     }
-
+    /**
+     *
+     * This function checks if the game has a catcher defined
+     *
+     *   @return   boolean
+     *
+     */
     function catcherDefined() {
 
         var i;
@@ -368,7 +426,16 @@ var Game = function (socket) {
         return false;
     }
 
-
+    /**
+     *
+     * This toggles a players active state
+     *
+     * * @param    id, player id
+     * * @param    active, on / off
+     *
+     *   @return   boolean, if false no player has been found by id
+     *
+     */
     function updatePlayer(id, active) {
         var i;
         for (i = 0; i < players.length; i++) {
@@ -380,6 +447,18 @@ var Game = function (socket) {
         return false;
     };
 
+    /**
+     *
+     * This sends a message to all conected players of the game
+     *
+     *  Message levels:
+     *      1 = info
+     *      2 = err
+     *
+     * * @param    data.status, message level
+     * * @param    data.payload, message text
+     *
+     */
     function srvMsg(data) {
         /*
          Message levels:
@@ -391,7 +470,7 @@ var Game = function (socket) {
     };
 
 
-    // Define which variables and methods can be accessed
+    // Define which variables and methods can be accessed of Game class
     return {
         id: id,
         initGame: initGame
