@@ -23,9 +23,6 @@ var socket;
 var imgPlayer;
 var imgCatcher;			
 
-// Debugboolean, provides us the full verbosity
-var DEBUG = false; 
-
 
 /**
  *
@@ -89,9 +86,6 @@ var setEventHandlers = function() {
 	window.addEventListener("keydown", onKeydown, false);
 	window.addEventListener("keyup", onKeyup, false);
 	
-	// Window resize
-	window.addEventListener("resize", onResize, false);
-	
 	// Socket connection successful
 	socket.on("connect", onSocketConnected);
 	
@@ -140,17 +134,6 @@ function onKeyup(e) {
 	if (localPlayer) {
 		keys.onKeyUp(e);
 	};
-};
-
-/**
- *
- * Gets called if browser windows get resized, at the moment source of many bugs
- *
- */
-function onResize(e) {
-	// Maximise the canvas
-	//canvas.width = window.innerWidth;
-	// canvas.height = window.innerHeight;
 };
 
 /**

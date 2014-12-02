@@ -27,13 +27,7 @@
 		<script src="js/game.js"></script>
 		<script>	
 		var interval = setInterval(function(){ jQuery('#welcome h1').css('color',getRandomColor()); }, 500);
-		setTimeout(function(){ 
-			init();
-			animate(); 
-			clearInterval(interval);
-			jQuery('#gameCanvas').fadeIn();
-			jQuery('#welcome').hide();
-		}, 3000);
+		
 		</script>
 	</body>
 </html>
