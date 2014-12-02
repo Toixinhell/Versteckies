@@ -1,5 +1,5 @@
 /**
- * This are our Helperfunctions, everything that doesn't belong into other logics
+ * These are our Helperfunctions, everything that doesn't belong into other logics
  * is residing here
  *
  * @category   ClientSide
@@ -98,6 +98,7 @@ function writeServerInfo(data){
  */
 function drawWinnerNotice(){
 	$('#gameOver h1').empty().append("You Won!");
+	$('#gameOverSound').get(0).play();
 	slideInMessage();
 }
 
@@ -109,6 +110,7 @@ function drawWinnerNotice(){
  */
 function drawLooserNotice(){
 	$('#gameOver h1').empty().append("THE GAME");
+	audioElement.play();
 	slideOutMessage();
 }
 

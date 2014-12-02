@@ -75,8 +75,6 @@ function init() {
 	setEventHandlers();
 };
 
-function initGame(){
-}
 
 /**
  *
