@@ -76,10 +76,10 @@ function writeServerInfo(data){
 	
 	switch(type){
 	case 1:
-		html = '<p style="color:blue;">'+message+'</p>';
+		html = '<h1 style="color:blue;">'+message+'</h1>';
 		break;
 	case 2:
-		html = '<p style="color:red;">'+message.toUpperCase()+'</p>';
+		html = '<h1 style="color:red;">'+message.toUpperCase()+'</h1>';
 		break;
 	}
 	
