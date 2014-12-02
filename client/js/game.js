@@ -1,20 +1,38 @@
-/**************************************************
-** GAME VARIABLES
-**************************************************/
-var canvas,			// Canvas DOM element
-ctx,			// Canvas rendering context
-keys,			// Keyboard input
-localPlayer,	// Local player
-remotePlayers,	// Remote players
-socket,
-img;			// The player image
+/**
+ * Our Gameclass, the beating heart on the Clients side, it provides us with logic
+ * and will eventually throw errors now and then
+ *
+ * @category   ClientSide
+ * @author     Stefan Bakocs
+ * @license    THE BEER-WARE LICENSE (Revision 42)
+ */
+ 
+// Canvas DOM element
+var canvas;
+// Canvas rendering context
+var ctx;
+// Keyboard input
+var keys;
+// Local player
+var localPlayer;
+// Remote players
+var remotePlayers;
+// The socket connection
+var socket;
+// The player image
+var imgPlayer;
+var imgCatcher;			
 
-var DEBUG = false; 	//Are you sure?
+// Debugboolean, provides us the full verbosity
+var DEBUG = false; 
 
 
-/**************************************************
-** GAME INITIALISATION
-**************************************************/
+/**
+ *
+ * Game Initialisation
+ * Builds up canvas and shows us fancy field of battle
+ *
+ */
 function init() {
 	// Declare the canvas and rendering context
 	canvas = document.getElementById("gameCanvas");
@@ -64,9 +82,11 @@ function init() {
 };
 
 
-/**************************************************
-** GAME EVENT HANDLERS
-**************************************************/
+/**
+ *
+ * This function sets our eventhandlers
+ *
+ */
 var setEventHandlers = function() {
 	// Keyboard
 	window.addEventListener("keydown", onKeydown, false);
@@ -90,7 +110,6 @@ var setEventHandlers = function() {
 	// Player removed message received
 	socket.on("remove player", onRemovePlayer);
 
-
 	// Player collided
 	socket.on("collision", onClientCollision);
 	
@@ -104,28 +123,44 @@ var setEventHandlers = function() {
 	socket.on("server message", onServerMessage);
 };
 
-// Keyboard key down
+/**
+ *
+ * Gets called if key is pressed down
+ *
+ */
 function onKeydown(e) {
 	if (localPlayer) {
 		keys.onKeyDown(e);
 	};
 };
 
-// Keyboard key up
+/**
+ *
+ * Gets called if key is released
+ *
+ */
 function onKeyup(e) {
 	if (localPlayer) {
 		keys.onKeyUp(e);
 	};
 };
 
-// Browser window resize
+/**
+ *
+ * Gets called if browser windows get resized, at the moment source of many bugs
+ *
+ */
 function onResize(e) {
 	// Maximise the canvas
 	canvas.width = window.innerWidth;
 	canvas.height = window.innerHeight;
 };
 
-//Game over
+/**
+ *
+ * Handles gameover state
+ *
+ */
 function onGameOver(gameData) {
 	
 	if(gameData.msg == 'you won')
@@ -141,7 +176,11 @@ function onGameOver(gameData) {
 	//location.reload(); 
 };
 
-// Socket connected
+/**
+ *
+ * When we connect to the Server
+ *
+ */
 function onSocketConnected() {
 	console.log("Connected to socket server");
 	
@@ -149,12 +188,20 @@ function onSocketConnected() {
 	socket.emit("new player", {x: localPlayer.getX(), y: localPlayer.getY()});
 };
 
-// Socket disconnected
+/**
+ *
+ * When a player disconnects
+ *
+ */
 function onSocketDisconnect() {
 	console.log("Disconnected from socket server");
 };
 
-// New player
+/**
+ *
+ * When a new player connects
+ *
+ */
 function onNewPlayer(data) {
 	console.log("New player connected: "+data.id);
 	
@@ -166,7 +213,11 @@ function onNewPlayer(data) {
 	remotePlayers.push(newPlayer);
 };
 
-// Move player
+/**
+ *
+ * When a other player moves
+ *
+ */
 function onMovePlayer(data) {
 	var movePlayer = playerById(data.id);
 	
@@ -181,7 +232,11 @@ function onMovePlayer(data) {
 		movePlayer.setY(data.y);
 };
 
-// Remove player
+/**
+ *
+ * If a player (for whatever reasons e.g. disconnects, ragequits) gets removed
+ *
+ */
 function onRemovePlayer(data) {
 	var removePlayer = playerById(data.id);
 	
@@ -194,10 +249,13 @@ function onRemovePlayer(data) {
 	// Remove player from array
 	remotePlayers.splice(remotePlayers.indexOf(removePlayer), 1);
 };
-// Sets the catcher
+
+/**
+ *
+ * If the current catcher gets disconnected we have to set a new catcher
+ *
+ */
 function onNewCatcher(data){
-
-
 
     if(!playerById(data.id)){
         localPlayer.setIsCatcher(true);
@@ -218,10 +276,20 @@ function onNewCatcher(data){
 
 }
 
+/**
+ *
+ * Serve can send us a message, here we receive it
+ *
+ */
 function onServerMessage(data){
 	writeServerInfo(data);
 }
 
+/**
+ *
+ * Oh my ... a player collided, take action!
+ *
+ */
 function onClientCollision(data){
 	var colPlayer1 = playerById(data.id1);
 	var colPlayer2 = playerById(data.id2);
@@ -271,9 +339,7 @@ function onClientCollision(data){
 			if (localPlayer.getIsCatcher())
 			{
 				console.log('localPlayer is catcher');
-				updateRemotePlayerActive(colPlayer1.id, false);
-				//socket.emit("update player active", {id: colPlayer1.id, isActive: colPlayer1.getIsActive()});
-				
+				updateRemotePlayerActive(colPlayer1.id, false);				
 			}
 			else
 			{
@@ -289,12 +355,10 @@ function onClientCollision(data){
 		if (colPlayer1.getIsCatcher())
 		{
 			updateRemotePlayerActive(colPlayer2.id, false);
-			//socket.emit("update player active", {id: colPlayer2.id, isActive: colPlayer2.getIsActive()});
 		}
 		else if (colPlayer2.getIsCatcher())
 		{
 			updateRemotePlayerActive(colPlayer1.id, false);
-			//socket.emit("update player active", {id: colPlayer1.id, isActive: colPlayer1.getIsActive()});
 		}
 		
 		console.log('1: ' + colPlayer1.getIsActive());
@@ -305,13 +369,12 @@ function onClientCollision(data){
 	html = writeCollisionHTML(data);
 }
 
-/**************************************************
-** GAME ANIMATION LOOP
-**************************************************/
+/**
+ *
+ * Each refresh, passes through here, this will initiate redrawing of our canvas
+ *
+ */
 function animate() {
-	
-	//console.log('localplayer is catcher:' + localPlayer.getIsCatcher());
-	//console.log('localplayer is catcher:' + localPlayer.getIsActive());
 	
 	
 	//Only update() position of localPlayer if he is still active!
@@ -326,15 +389,14 @@ function animate() {
 	window.requestAnimFrame(animate);
 };
 
-
-/**************************************************
-** GAME UPDATE
-**************************************************/
+/**
+ *
+ * Each time a player has moved, we have to update its position
+ *
+ */
 function update() {
 	var x = localPlayer.getX();
 	var y = localPlayer.getY();
-	
-	//console.log(x,y);
 	
 	// Update local player and check for change
 	if (localPlayer.update(keys)) {
@@ -343,10 +405,11 @@ function update() {
 	};
 };
 
-
-/**************************************************
-** GAME DRAW
-**************************************************/
+/**
+ *
+ * Draw our player to the canvas
+ *
+ */
 function draw() {
 	// Wipe the canvas clean
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -378,11 +441,11 @@ function draw() {
 	};
 };
 
-
-/**************************************************
-** GAME HELPER FUNCTIONS
-**************************************************/
-// Find player by ID
+/**
+ *
+ * Get a player by his ID
+ *
+ */
 function playerById(id) {
 	var i;
 	for (i = 0; i < remotePlayers.length; i++) {
@@ -393,6 +456,13 @@ function playerById(id) {
 	return false;
 };
 
+/**
+ *
+ * Sets the state of the other players because sometimes
+ * we're running into situations where we have to keep the game running allthough
+ * the user is probably dead
+ *
+ */
 function updateRemotePlayerActive(id, active) {
 	var i;
 	for (i = 0; i < remotePlayers.length; i++) {
@@ -403,7 +473,11 @@ function updateRemotePlayerActive(id, active) {
 	return false;
 };
 
-
+/**
+ *
+ * Debug Function, poorly maintained
+ *
+ */
 function debugPlayers(data){
 	for (i = 0; i < remotePlayers.length; i++) {
 		

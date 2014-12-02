@@ -1,6 +1,10 @@
-/**************************************************
-** GAME PLAYER CLASS
-**************************************************/
+/**
+ * Playerclass, this is what makes our Player ALIVE!
+ *
+ * @category   ClientSide
+ * @author     Stefan Bakocs
+ * @license    THE BEER-WARE LICENSE (Revision 42)
+ */
 var Player = function(startX, startY, hexColor, newIsCatcher) {
 	var x = startX,
 	y = startY,
@@ -43,8 +47,12 @@ var Player = function(startX, startY, hexColor, newIsCatcher) {
 	var setIsCatcher = function(newIsCatcher) {
 		isCatcher = newIsCatcher;
 	};
-	
-	// Update player position
+
+/**
+ *
+ * Update player position
+ *
+ */
 	var update = function(keys) {
 		
 		
@@ -71,8 +79,12 @@ var Player = function(startX, startY, hexColor, newIsCatcher) {
 		
 		return (prevX != x || prevY != y) ? true : false;
 	};
-	
-	// Draw player
+
+/**
+ *
+ * Draw players
+ *
+ */
 	var draw = function(ctx, localPlayer) {
 		
 		ctx.fillRect(x-25, y-25, 50, 50);
@@ -83,7 +95,12 @@ var Player = function(startX, startY, hexColor, newIsCatcher) {
 		
 	};
 	
-	// Draw catcher
+
+/**
+ *
+ * Draw catcher
+ *
+ */
 	var drawCatcher = function(ctx) {
 		
 		ctx.fillRect(x-25, y-25, 50, 50);

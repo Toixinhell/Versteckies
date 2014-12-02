@@ -1,3 +1,11 @@
+/**
+ * This script provides cross browser support
+ *
+ * @category   ClientSide
+ * @author     Stefan Bakocs
+ * @license    THE BEER-WARE LICENSE (Revision 42)
+ */
+
 // shim layer with setTimeout fallback
 window.requestAnimFrame = (function(){
   return  window.requestAnimationFrame       || 
