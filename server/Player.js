@@ -2,8 +2,7 @@
  * This is the Player class. It resembles an active player in the game.
  *
  * @category   ServerSide
- * @author     Lukas Stahel
- * @author     Stefan Bacoks
+ * @author     Lukas Stahel, Stefan Bakocs
  * @license    THE BEER-WARE LICENSE (Revision 42)
  */
 var Player = function(startX, startY) {

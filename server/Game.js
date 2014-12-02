@@ -9,8 +9,7 @@
  * TODO: Implement the gameID in all necessary functions, so the server can handle multiple games.
  *
  * @category   ServerSide
- * @author     Lukas Stahel
- * @author     Stefan Bacoks
+ * @author     Lukas Stahel, Stefan Bakocs
  * @license    THE BEER-WARE LICENSE (Revision 42)
  */
 
@@ -48,7 +47,7 @@ var Game = function (socket) {
      *
      */
     function initGame() {
-        // Create an empty array to store players
+
         setEventHandlers();
 
     }
@@ -196,7 +195,10 @@ var Game = function (socket) {
         }
 
         else {
-                //TODO: Implement message to server that the game is full
+                /*TODO: Implement message to server that the game is full
+                        or find a better soution
+                 */
+
         }
     };
 
