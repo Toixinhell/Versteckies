@@ -155,7 +155,10 @@ var Game = function (socket) {
     function onNewPlayer(data) {
 
 
-        if (players.length <= 3) {
+
+
+            // Let the player know he is in a game
+            this.emit("game ready");
 
             // Create a new player
             var newPlayer = new Player(data.x, data.y);
@@ -193,11 +196,7 @@ var Game = function (socket) {
 
             // Add new player to the players array
             players.push(newPlayer);
-        }
 
-        else {
-                //TODO: Implement message to server that the game is full
-        }
     };
 
     /**
@@ -236,9 +235,6 @@ var Game = function (socket) {
             //The game is over
             srvMsg({ status: 2, payload: 'game over' });
 
-            this.broadcast.emit("game over", {msg: 'you lost!'});
-
-            srvMsg({ status: 2, payload: 'game over' });
 
             //Now also set the last player inactive
             console.log('last player set inactive');
