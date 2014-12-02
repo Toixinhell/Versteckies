@@ -80,10 +80,10 @@ function reInit(theme) {
 		playerSrc='images/space invader.png';
 		catcherSrc='images/ship.png';
 		break;
-		case 'nintendo':
 		default:
-		playerSrc='';
-		catcherSrc='';
+		case 'nintendo':
+		playerSrc='8-bit_himiko.png';
+		catcherSrc='8bit-mushroom-png';
 		break;
 	}
 	imgPlayer = new Image();
