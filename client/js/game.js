@@ -31,18 +31,6 @@ var imgCatcher;
  *
  */
 function init() {
-	
-	// Initialise the local player (catcher is default: false)
-	localPlayer = new Player(startX, startY, getRandomColor(), false);
-	
-	// Initialise socket connection
-	socket = io.connect("http://localhost:8000");
-	
-	// Start listening for events
-	setEventHandlers();
-};
-
-function initGame() {
 	// Declare the canvas and rendering context
 	canvas = document.getElementById("gameCanvas");
 	ctx = canvas.getContext("2d");
@@ -74,11 +62,21 @@ function initGame() {
 		startY += 1;
 	}
 	
+	// Initialise the local player (catcher is default: false)
+	localPlayer = new Player(startX, startY, getRandomColor(), false);
+	
+	// Initialise socket connection
+	socket = io.connect("http://localhost:8000");
 	
 	// Initialise remote players array
 	remotePlayers = [];
-}
+	
+	// Start listening for events
+	setEventHandlers();
+};
 
+function initGame(){
+}
 
 /**
  *
@@ -278,7 +276,6 @@ function onServerMessage(data){
  *
  */
 function onGameReady(){
-	initGame();
 	animate(); 
 	clearInterval(interval);
 	jQuery('#gameCanvas').fadeIn();

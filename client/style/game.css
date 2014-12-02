@@ -26,6 +26,12 @@ canvas {
 	position: absolute;
 	top: 40%;
 	font-size: 60px;
+   -webkit-text-stroke-width: 1px;
+   -webkit-text-stroke-color: black;
+}
+
+#welcome sub{
+	font-size: 10px;
 }
 
 #gameOver{

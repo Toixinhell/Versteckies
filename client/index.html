@@ -18,17 +18,25 @@
         	<h1>Game in Progress</h1>
         </div>
 		<canvas id="gameCanvas"></canvas>
-		<div id="welcome"><h1>Welcome to Shaq vs. Ghosts</h1></div>
+		<div id="welcome">
+		<h1>Welcome to Shaq vs. Ghosts<sub>MMO Edition</sub></h1>
+		
+		</div>
 		<script src="js/helpers.js"></script>
 		<script src="http://localhost:8000/socket.io/socket.io.js"></script>
 		<script src="js/requestAnimationFrame.js"></script>
 		<script src="js/Keys.js"></script>
 		<script src="js/Player.js"></script>
 		<script src="js/game.js"></script>
-		<script>	
+		<script>
 		var interval = setInterval(function(){ jQuery('#welcome h1').css('color',getRandomColor()); }, 500);
-		
-		init();
+		setTimeout(function(){ 
+			init();
+			animate(); 
+			clearInterval(interval);
+			jQuery('#gameCanvas').fadeIn();
+			jQuery('#welcome').hide();
+		}, 3000);
 		</script>
 	</body>
 </html>
