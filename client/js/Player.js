@@ -87,8 +87,8 @@ var Player = function(startX, startY, hexColor, newIsCatcher) {
  */
 	var draw = function(ctx, localPlayer) {
 		
-		ctx.fillRect(x-25, y-25, 50, 50);
-		ctx.fillStyle = color;
+		//ctx.fillRect(x-25, y-25, 50, 50);
+		//ctx.fillStyle = color;
 		ctx.drawImage(imgPlayer,x-25,y-25);
 		
 		ctx.fill();
@@ -103,8 +103,8 @@ var Player = function(startX, startY, hexColor, newIsCatcher) {
  */
 	var drawCatcher = function(ctx) {
 		
-		ctx.fillRect(x-25, y-25, 50, 50);
-		ctx.fillStyle = 'red';
+		//ctx.fillRect(x-25, y-25, 50, 50);
+		//ctx.fillStyle = 'red';
 		ctx.drawImage(imgCatcher,x-25,y-25);
 		
 		ctx.fill();

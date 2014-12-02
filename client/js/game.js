@@ -48,9 +48,6 @@ function init() {
 	canvas.width = 800//window.innerWidth;
 	canvas.height = 600//window.innerHeight;
 	
-	// give the canvas a boarder
-	canvas.style.border = "red 1px solid";
-	
 	// Initialise keyboard controls
 	keys = new Keys();
 	
