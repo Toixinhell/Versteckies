@@ -164,9 +164,9 @@ function onGameOver(gameData) {
 	{
 		localPlayer.setIsActive(false);
 		//localPlayer.setIsCatcher(false);
-		drawWinnerNotice();
+		//drawWinnerNotice();
 	}else if(gameData.msg == 'you lost!'){
-		drawLooserNotice();
+		//drawLooserNotice();
 	}
 	
 	console.log('Game over:' + gameData.msg);
