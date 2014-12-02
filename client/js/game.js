@@ -65,7 +65,7 @@ function init() {
 	localPlayer = new Player(startX, startY, getRandomColor(), false);
 	
 	// Initialise socket connection
-	socket = io.connect("http://localhost:8000");
+	socket = io.connect("http://192.168.2.200:8000");
 	
 	// Initialise remote players array
 	remotePlayers = [];
@@ -74,6 +74,23 @@ function init() {
 	setEventHandlers();
 };
 
+function reInit(theme) {
+	switch(theme){
+		case 'atari':
+		playerSrc='images/space invader.png';
+		catcherSrc='images/ship.png';
+		break;
+		case 'nintendo':
+		default:
+		playerSrc='';
+		catcherSrc='';
+		break;
+	}
+	imgPlayer = new Image();
+  	imgPlayer.src = playerSrc;
+	imgCatcher = new Image();
+  	imgCatcher.src = imgCatcher;
+}
 
 /**
  *
