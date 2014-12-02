@@ -3,6 +3,7 @@ body {
 	background-image:url('../images/bush.png');
 	background-repeat:repeat-x;
 	background-position:bottom;
+	height:100%
 }
 
 canvas {
@@ -17,6 +18,14 @@ canvas {
 	background-image:url('../images/stoneTile.jpeg');
 	border:1px solid black;
 	display:none;
+}
+
+#welcome {
+	text-align: center;
+	width: 100%;
+	position: absolute;
+	top: 40%;
+	font-size: 60px;
 }
 
 #gameOver{

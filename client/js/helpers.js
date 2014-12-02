@@ -14,7 +14,7 @@
  *
  */
 function slideInMessage(){
-	jQuery('#gameOver').animate({left: -35},'fast');
+	jQuery('#gameOver').animate({left: -40},'fast');
 }
 
 /**
