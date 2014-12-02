@@ -68,9 +68,7 @@ var Game = function (socket) {
 
     /**
      *
-     * Ta new game has been created
-     *
-     * @param    socket, the socket responsible for the connections to the game
+     * This function sets our eventhandlers
      *
      */
     function onSocketConnection(client) {
@@ -92,8 +90,11 @@ var Game = function (socket) {
 
     };
 
-
-// Get Player Updates
+    /**
+     *
+     * This function updates the players[] setting the player inactive
+     *
+     */
     function onPlayerActiveUpdate(data) {
 
         console.log('player sent update');
@@ -102,7 +103,11 @@ var Game = function (socket) {
 
     };
 
-// gameSocket client has disconnected
+    /**
+     *
+     * This handles disconnecting players and sends an update to all the remaining ones
+     *
+     */
     function onClientDisconnect() {
         util.log("Player has disconnected: " + this.id);
 
@@ -137,7 +142,16 @@ var Game = function (socket) {
 
     };
 
-// New player has joined
+    /**
+     *
+     * This function handles new player connections
+     *
+     * * @param    data, represents all information recieved from the player
+     *                data.x, the x-axis position of the player
+     *                data.y, the y-axis position of the player
+     *
+     *
+     */
     function onNewPlayer(data) {
 
 
@@ -153,8 +167,6 @@ var Game = function (socket) {
                 this.emit("new catcher", {id: newPlayer.id});
                 console.log('First player set to Catcher ' + newPlayer.getIsCatcher());
 
-                //reset players
-                //players = [];
             }
 
 
@@ -176,21 +188,27 @@ var Game = function (socket) {
                     y: existingPlayer.getY(),
                     isCatcher: existingPlayer.getIsCatcher()
                 });
-                //console.log(existingPlayer.getIsCatcher() + ' id: ' + existingPlayer.id);
             }
             ;
-
 
             // Add new player to the players array
             players.push(newPlayer);
         }
 
         else {
-
+                //TODO: Implement message to server that the game is full
         }
     };
 
-// Player has moved
+    /**
+     *
+     * This function player movement.
+     * it also checks for collisions and checks if there are still enough players connected
+     *
+     * * @param    data, represents all information recieved from the player
+     *                data.x, the x-axis position of the player
+     *                data.y, the y-axis position of the player
+     */
     function onMovePlayer(data) {
 
         // Find player in array
@@ -232,10 +250,13 @@ var Game = function (socket) {
     };
 
 
-    /**************************************************
-     ** GAME HELPER FUNCTIONS
-     **************************************************/
-// Find player by ID
+    /**
+     *
+     * This function finds players by their ID and returns an player object
+     *
+     * * @param    id, represents id of the player to be returned
+     *   @return      player object
+     */
     function playerById(id) {
         var i;
         for (i = 0; i < players.length; i++) {
@@ -247,7 +268,13 @@ var Game = function (socket) {
         return false;
     };
 
-
+    /**
+     *
+     * This function checks if two players have collided
+     *
+     * * @param    id, represents id of the player to be returned
+     *   @return      player object
+     */
     function hitDetection(i, j) {
         return checkCoordinates(players[i].getX(), players[i].getY(), players[j].getX(), players[j].getY())
             && players[i].id != players[j].id
