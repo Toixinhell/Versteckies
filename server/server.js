@@ -7,8 +7,7 @@
  * TODO: Implement the possibility for more than one game at a time.
  *
  * @category   ServerSide
- * @author     Lukas Stahel
- * @author     Stefan Bacoks
+ * @author     Lukas Stahel, Stefan Bakocs
  * @license    THE BEER-WARE LICENSE (Revision 42)
  */
 
@@ -40,7 +39,7 @@ function init() {
     var game1 = new Game(socket);
 
     game1.id = 1;
-    game1.initGame(socket);
+    game1.initGame();
 
     // Adding the MOCK game to the array of games
     games.push(game1);
