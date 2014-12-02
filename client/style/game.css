@@ -52,3 +52,7 @@ canvas {
 	font-size: 30px;
 	margin-top: 32px;
 }
+
+.sound {
+	display:none;
+}

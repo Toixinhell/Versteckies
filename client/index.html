@@ -19,9 +19,20 @@
         </div>
 		<canvas id="gameCanvas"></canvas>
 		<div id="welcome">
-		<h1>Welcome to Shaq vs. Ghosts<sub>MMO Edition</sub></h1>
-		<audio id="gameOverSound" src="gameover.wav" type="audio/ogg"></audio>    
+		<h1>Welcome to Shaq vs. Ghosts<sub>MMO Edition</sub></h1>	
 		</div>
+		<audio id="gameOverSound" class="sound" controls>
+		  <source src="gameover.mp3" type="audio/mpeg">
+		Your browser does not support the audio element.
+		</audio>
+		<audio id="tick" class="sound" controls>
+		  <source src="tick.wav" type="audio/wav">
+		Your browser does not support the audio element.
+		</audio>
+		<audio id="explosion" class="sound" controls>
+		  <source src="explosion.ogg" type="audio/ogg">
+		Your browser does not support the audio element.
+		</audio>
 		<script src="js/helpers.js"></script>
 		<script src="http://localhost:8000/socket.io/socket.io.js"></script>
 		<script src="js/requestAnimationFrame.js"></script>
@@ -29,18 +40,7 @@
 		<script src="js/Player.js"></script>
 		<script src="js/game.js"></script>
 		<script>
-		
-		jQuery(document).ready(function() {
-			var audioElement = document.createElement('audio');
-			audioElement.setAttribute('src', 'gameover.wav');
-			audioElement.load()
-			audioElement.addEventListener("load", function() {
-            audioElement.play();
-        }, true);
-		});
-        //$.get();
 
-		
 		var interval = setInterval(function(){ jQuery('#welcome h1').css('color',getRandomColor()); }, 500);
 		setTimeout(function(){ 
 			init();

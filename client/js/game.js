@@ -123,6 +123,7 @@ var setEventHandlers = function() {
  */
 function onKeydown(e) {
 	if (localPlayer) {
+		jQuery('#tick').get(0).play();
 		keys.onKeyDown(e);
 	};
 };
@@ -149,9 +150,9 @@ function onGameOver(gameData) {
 	{
 		localPlayer.setIsActive(false);
 		//localPlayer.setIsCatcher(false);
-		//drawWinnerNotice();
+		drawWinnerNotice();
 	}else if(gameData.msg == 'you lost!'){
-		//drawLooserNotice();
+		drawLooserNotice();
 	}
 	
 	console.log('Game over:' + gameData.msg);
@@ -400,7 +401,6 @@ function update() {
 function draw() {
 	// Wipe the canvas clean
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
-	
 	if (localPlayer.getIsCatcher())
 	{
 		// Draw the local player

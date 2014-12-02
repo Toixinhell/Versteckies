@@ -97,8 +97,8 @@ function writeServerInfo(data){
  *
  */
 function drawWinnerNotice(){
-	$('#gameOver h1').empty().append("You Won!");
-	$('#gameOverSound').get(0).play();
+	//$('#gameOver h1').empty().append("You Won!");
+	jQuery('#gameOverSound').get(0).play();
 	slideInMessage();
 }
 
@@ -109,7 +109,9 @@ function drawWinnerNotice(){
  *
  */
 function drawLooserNotice(){
-	$('#gameOver h1').empty().append("THE GAME");
+	//$('#gameOver h1').empty().append("THE GAME");
+	jQuery('#gameOverSound').get(0).play();
+	jQuery('#explosion').get(0).play();
 	audioElement.play();
 	slideOutMessage();
 }

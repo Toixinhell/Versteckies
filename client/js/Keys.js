@@ -20,6 +20,7 @@ var Keys = function(up, left, right, down) {
  *
  */	
 	var onKeyDown = function(e) {
+	
 		var that = this,
 			c = e.keyCode;
 		switch (c) {
