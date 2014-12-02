@@ -232,7 +232,13 @@ var Game = function (socket) {
 
         //Check if game is over (moves are the only thing changing)
         if (countActive() == 1) {
+
+            //The game is over
+            srvMsg({ status: 2, payload: 'game over' });
+
             this.broadcast.emit("game over", {msg: 'you lost!'});
+
+            srvMsg({ status: 2, payload: 'game over' });
 
             //Now also set the last player inactive
             console.log('last player set inactive');
@@ -241,6 +247,7 @@ var Game = function (socket) {
             movePlayer.setIsActive(false);
 
             this.emit("game over", {msg: 'you won'});
+
 
         }
         else {
