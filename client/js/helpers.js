@@ -101,11 +101,9 @@ function writeServerInfo(data){
  *
  */
 function drawWinnerNotice(){
-	data.status = 1;
-	data.payload = 'You Won!';
-	writeServerInfo(data);
 	jQuery('#gameOverSound').get(0).play();
 	slideInMessage();
+	alert('You Won (nothing)!');
 }
 
 /**
@@ -115,12 +113,9 @@ function drawWinnerNotice(){
  *
  */
 function drawLooserNotice(){
-	data.status = 1;
-	data.payload = 'THE GAME';
-	writeServerInfo(data);
-	jQuery('#gameOverSound').get(0).play();
 	jQuery('#explosion').get(0).play();
 	audioElement.play();
 	slideOutMessage();
+	alert('THE GAME');
 }
 

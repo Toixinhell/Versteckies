@@ -74,7 +74,6 @@ function init() {
 	setEventHandlers();
 };
 
-
 /**
  *
  * This function reinitializes the game, at the moment it's a first attempt for a themechanger
@@ -211,8 +210,7 @@ function onSocketDisconnect() {
  * When a new player connects
  *
  * * @param    data, represents all information recieved from the player
- *                data.x, the x-axis position of the player
- *                data.y, the y-axis position of the player
+ *                data.id, id of the player
  *
  */
 function onNewPlayer(data) {
@@ -233,6 +231,7 @@ function onNewPlayer(data) {
  * * @param    data, represents all information recieved from the player
  *                data.x, the x-axis position of the player
  *                data.y, the y-axis position of the player
+ *                data.id, id of the player
  */
 function onMovePlayer(data) {
 	var movePlayer = playerById(data.id);
@@ -272,9 +271,8 @@ function onRemovePlayer(data) {
  *
  * If the current catcher gets disconnected we have to set a new catcher
  *
- * * @param    data, represents all information recieved from the player
- *                data.x, the x-axis position of the player
- *                data.y, the y-axis position of the player
+ * * @param    data, data.id, represents id of the player to be returned
+ *
  *
  */
 function onNewCatcher(data){
@@ -295,7 +293,6 @@ function onNewCatcher(data){
     }
 
     console.log(remotePlayers);
-
 }
 
 /**
@@ -326,8 +323,8 @@ function onGameReady(){
  * Oh my ... a player collided, take action!
  *
  * * @param    data, represents all information recieved from the player
- *                data.x, the x-axis position of the player
- *                data.y, the y-axis position of the player
+ *                data.id1, id of the player
+ *                data.id2, id of the player
  *
  */
 function onClientCollision(data){
@@ -355,7 +352,6 @@ function onClientCollision(data){
 				console.log('localPlayer is not catcher');
 				localPlayer.setIsActive(false);
 				socket.emit("update player active", {id: localPlayer.id, isActive: localPlayer.getIsActive()});
-				
 			}
 			
 			
@@ -363,7 +359,7 @@ function onClientCollision(data){
 		}
 	} else if (!colPlayer2) {
 	
-	// Player 2 may be localPlayer not found
+		// Player 2 may be localPlayer not found
 		console.log('colPlayer2 is null, has to be localPlayer');
 		
 		if(localPlayer.getIsActive()){
@@ -477,15 +473,18 @@ function draw() {
  *
  * Get a player by his ID
  *
+ * * @param    id, of the player of course
  */
 function playerById(id) {
 	var i;
+	var retVal = false;
 	for (i = 0; i < remotePlayers.length; i++) {
-		if (remotePlayers[i].id == id)
-			return remotePlayers[i];
-	};
+		if(remotePlayers[i].id == id){
+			retVal = remotePlayers[i];
+		}
+	}
 	
-	return false;
+	return retVal;
 };
 
 /**
@@ -494,15 +493,20 @@ function playerById(id) {
  * we're running into situations where we have to keep the game running allthough
  * the user is probably dead
  *
+ * * @param    id, of the player of course
+ * * @param    active, state of the player of course
  */
 function updateRemotePlayerActive(id, active) {
 	var i;
-	for (i = 0; i < remotePlayers.length; i++) {
-		if (remotePlayers[i].id == id)
+	var retVal = false;
+	for(i = 0; i < remotePlayers.length; i++) {
+		if(remotePlayers[i].id == id){
 			remotePlayers[i].setIsActive(active);
-		return true;
-	};
-	return false;
+			retVal = true;
+		}
+	}
+	
+	return retVal;
 };
 
 /**
@@ -511,10 +515,9 @@ function updateRemotePlayerActive(id, active) {
  *
  */
 function debugPlayers(data){
+	console.log(data);
 	for (i = 0; i < remotePlayers.length; i++) {
-		
 		console.log(remotePlayers[i]);
-		
 	};
 	console.log(localPlayer);
 }
