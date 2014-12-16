@@ -18,6 +18,11 @@
         	<h1>Game in Progress</h1>
         </div>
 		<canvas id="gameCanvas"></canvas>
+		<select id="theme">
+			<option value="default">Default</option>
+			<option value="atari">Atari</option>
+			<option value="nintendo">Nintendo</option>
+		</select>
 		<div id="welcome">
 		<h1>Welcome to Shaq vs. Ghosts<sub>MMO Edition</sub></h1>	
 		</div>
@@ -49,6 +54,10 @@
 			jQuery('#gameCanvas').fadeIn();
 			jQuery('#welcome').hide();
 		}, 3000);
+		
+		$('#theme').on('change', function() {
+		  reInit( this.value ); // or $(this).val()
+		});
 		</script>
 	</body>
 </html>

@@ -86,16 +86,19 @@ function reInit(theme) {
 		playerSrc='images/space invader.png';
 		catcherSrc='images/ship.png';
 		break;
-		default:
 		case 'nintendo':
-		playerSrc='8-bit_himiko.png';
-		catcherSrc='8bit-mushroom-png';
+		playerSrc='images/8bit_himiko.png';
+		catcherSrc='images/reds.png';
 		break;
+		case 'default':
+		default:
+		playerSrc='images/ghost.gif';
+		catcherSrc='images/shaq.png';
 	}
 	imgPlayer = new Image();
   	imgPlayer.src = playerSrc;
 	imgCatcher = new Image();
-  	imgCatcher.src = imgCatcher;
+  	imgCatcher.src = catcherSrc;
 }
 
 /**
