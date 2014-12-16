@@ -101,7 +101,9 @@ function writeServerInfo(data){
  *
  */
 function drawWinnerNotice(){
-	//$('#gameOver h1').empty().append("You Won!");
+	data.status = 1;
+	data.payload = 'You Won!';
+	writeServerInfo(data);
 	jQuery('#gameOverSound').get(0).play();
 	slideInMessage();
 }
@@ -113,7 +115,9 @@ function drawWinnerNotice(){
  *
  */
 function drawLooserNotice(){
-	//$('#gameOver h1').empty().append("THE GAME");
+	data.status = 1;
+	data.payload = 'THE GAME';
+	writeServerInfo(data);
 	jQuery('#gameOverSound').get(0).play();
 	jQuery('#explosion').get(0).play();
 	audioElement.play();
