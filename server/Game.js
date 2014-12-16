@@ -236,16 +236,19 @@ var Game = function (socket) {
         if (countActive() == 1) {
 
             //The game is over
-            srvMsg({ status: 2, payload: 'game over' });
+            //srvMsg({ status: 2, payload: 'game over' });
 
 
             //Now also set the last player inactive
             console.log('last player set inactive');
 
+
+
+
             movePlayer.setIsCatcher(false);
             movePlayer.setIsActive(false);
 
-            this.emit("game over", {msg: 'you won'});
+            //this.emit("game over", {msg: 'you won'});
 
 
         }
@@ -346,7 +349,7 @@ var Game = function (socket) {
                     }
 
                     // Bring it to the players' screen
-                    srvMsg({ status: 2, payload: 'test collision' });
+                    srvMsg({ status: 2, payload: 'Collision!' });
 
                     // Send the word out to the other players
                     gameSocket.emit("collision", {id1: players[i].id, id2: players[j].id});
