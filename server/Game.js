@@ -238,17 +238,13 @@ var Game = function (socket) {
             //The game is over
             //srvMsg({ status: 2, payload: 'game over' });
 
-
             //Now also set the last player inactive
             console.log('last player set inactive');
-
-
-
 
             movePlayer.setIsCatcher(false);
             movePlayer.setIsActive(false);
 
-            //this.emit("game over", {msg: 'you won'});
+            this.emit("game over", {msg: 'you won'});
 
 
         }
