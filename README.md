@@ -2,6 +2,18 @@ Versteckies
 ===========
 a school project
 
+Authors:    Stefan Bakocs, Lukas Stahel
+Version:    BETA
+Date:       16.12.2014
+Copyright:  THE BEER-WARE LICENSE (Revision 42)
+
+
+
+
+Versteckies
+===========
+
+
 
 Conventions
 ===========
