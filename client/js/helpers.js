@@ -44,6 +44,10 @@ function getRandomColor(){
  *
  * If someone collided we write this to our log
  *
+ * * @param    data, represents all information recieved from the player
+ *                data.id1, id of the player
+ *                data.id2, id of the player
+ *
  */
 function writeCollisionHTML(data){
 	html = '<p><span style="color:red;">'+data.id1+' </span>collided with<span style="color:green;"> '+data.id2+'</span></p>';

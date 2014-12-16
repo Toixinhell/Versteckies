@@ -298,7 +298,6 @@ var Game = function (socket) {
      * This function checks if  players have collided
      * by iterating through all possibilities
      *
-     *
      */
     function collisionDetect() {
 

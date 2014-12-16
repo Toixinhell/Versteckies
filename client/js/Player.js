@@ -52,6 +52,8 @@ var Player = function(startX, startY, hexColor, newIsCatcher) {
  *
  * Update player position
  *
+ * * @param    the keypress event
+ *
  */
 	var update = function(keys) {
 		
@@ -84,6 +86,8 @@ var Player = function(startX, startY, hexColor, newIsCatcher) {
  *
  * Draw players
  *
+ * * @param ctx is the canvascontext and the player which needs to be drawn
+ *
  */
 	var draw = function(ctx, localPlayer) {
 		
@@ -99,6 +103,8 @@ var Player = function(startX, startY, hexColor, newIsCatcher) {
 /**
  *
  * Draw catcher
+ *
+ * * @param    canvas context
  *
  */
 	var drawCatcher = function(ctx) {

@@ -18,6 +18,8 @@ var Keys = function(up, left, right, down) {
  *
  * Every tick the key is pressed down we have to get the direction
  *
+ * * @param    the keypress event
+ *
  */	
 	var onKeyDown = function(e) {
 	
@@ -44,6 +46,8 @@ var Keys = function(up, left, right, down) {
  *
  * Every tick the key is released, we have to set that we're not pressing it anymore
  *
+ *
+ * * @param    the keypress event
  */	
 	var onKeyUp = function(e) {
 		var that = this,

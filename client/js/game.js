@@ -65,7 +65,7 @@ function init() {
 	localPlayer = new Player(startX, startY, getRandomColor(), false);
 	
 	// Initialise socket connection
-	socket = io.connect("http://192.168.2.200:8000");
+	socket = io.connect("http://localhost:8000");
 	
 	// Initialise remote players array
 	remotePlayers = [];
@@ -74,6 +74,12 @@ function init() {
 	setEventHandlers();
 };
 
+
+/**
+ *
+ * This function reinitializes the game, at the moment it's a first attempt for a themechanger
+ *
+ */
 function reInit(theme) {
 	switch(theme){
 		case 'atari':
@@ -201,6 +207,10 @@ function onSocketDisconnect() {
  *
  * When a new player connects
  *
+ * * @param    data, represents all information recieved from the player
+ *                data.x, the x-axis position of the player
+ *                data.y, the y-axis position of the player
+ *
  */
 function onNewPlayer(data) {
 	console.log("New player connected: "+data.id);
@@ -217,6 +227,9 @@ function onNewPlayer(data) {
  *
  * When a other player moves
  *
+ * * @param    data, represents all information recieved from the player
+ *                data.x, the x-axis position of the player
+ *                data.y, the y-axis position of the player
  */
 function onMovePlayer(data) {
 	var movePlayer = playerById(data.id);
@@ -236,6 +249,8 @@ function onMovePlayer(data) {
  *
  * If a player (for whatever reasons e.g. disconnects, ragequits) gets removed
  *
+ * * @param    data.id, represents id of the player to be returned
+ *
  */
 function onRemovePlayer(data) {
 	var removePlayer = playerById(data.id);
@@ -253,6 +268,10 @@ function onRemovePlayer(data) {
 /**
  *
  * If the current catcher gets disconnected we have to set a new catcher
+ *
+ * * @param    data, represents all information recieved from the player
+ *                data.x, the x-axis position of the player
+ *                data.y, the y-axis position of the player
  *
  */
 function onNewCatcher(data){
@@ -280,6 +299,8 @@ function onNewCatcher(data){
  *
  * Serve can send us a message, here we receive it
  *
+ * * @param    data, represents a message from the  server
+ *
  */
 function onServerMessage(data){
 	writeServerInfo(data);
@@ -300,6 +321,10 @@ function onGameReady(){
 /**
  *
  * Oh my ... a player collided, take action!
+ *
+ * * @param    data, represents all information recieved from the player
+ *                data.x, the x-axis position of the player
+ *                data.y, the y-axis position of the player
  *
  */
 function onClientCollision(data){
